@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\laravel_example\UserManagement;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -256,5 +257,31 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 
     Route::post('assign-permission', [PermissionController::class, 'assignPermissionToRole'])->name('assign-permission');
     Route::post('revoke-permission', [PermissionController::class, 'revokePermissionToRole'])->name('revoke-permission');
+  });
+
+  //Users Routes
+  Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+    Route::get('/', [UserController::class, 'index'])->name('index');
+
+    Route::get('create', [UserController::class, 'create'])->name('create');
+    Route::post('store', [UserController::class, 'store'])->name('store');
+
+    Route::get('delete-selected', [UserController::class, 'destroySelected'])->name('destroy-selected');
+    Route::group(['prefix' => '/{id}'], function () {
+      Route::get('edit', [UserController::class, 'edit'])->name('edit');
+      Route::get('profile', [UserController::class, 'userprofile'])->name('profile');
+      Route::get('show', [UserController::class, 'show'])->name('show');
+      Route::get('editPermissions', [UserController::class, 'editPermissions'])->name('editPermissions');
+      Route::put('update', [UserController::class, 'update'])->name('update');
+      Route::get('delete', [UserController::class, 'destroy'])->name('destroy');
+
+      Route::get('make-active', [UserController::class, 'makeActive'])->name('make-active');
+    });
+    Route::group(['prefix' => '/{id}/ajax', 'as' => 'ajax-'], function () {
+      Route::get('/', [UserController::class, 'ajaxGetById'])->name('get-by-id');
+      Route::post('profile-update', [UserController::class, 'UserProfileUpdate'])->name('profile-update');
+      Route::post('users-menu', [UserController::class, 'users_menu'])->name('ajax-users-menu');
+      Route::get('get-user-payroll-details', [UserController::class, 'userPayrollDetails'])->name('get-user-payroll-details');
+    });
   });
 });

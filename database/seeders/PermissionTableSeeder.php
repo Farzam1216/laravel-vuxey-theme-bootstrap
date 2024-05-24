@@ -24,142 +24,137 @@ class PermissionTableSeeder extends Seeder
         'guard_name' => 'web',
         'title' => 'Dashboard',
       ],
-       // Roles Routes
-       [
+      // Roles Routes
+      [
         'name' => 'roles.index',
         'guard_name' => 'web',
         'show_name' => 'Can View Roles',
         'title' => 'Roles',
 
-    ],
-    [
+      ],
+      [
         'name' => 'roles.create',
         'guard_name' => 'web',
         'show_name' => 'Can Create Role',
         'title' => 'Roles',
 
-    ],
-    [
+      ],
+      [
         'name' => 'roles.store',
         'guard_name' => 'web',
         'show_name' => 'Can Store Role',
         'title' => 'Roles',
 
-    ],
-    [
+      ],
+      [
         'name' => 'roles.edit',
         'guard_name' => 'web',
         'show_name' => 'Can Edit Role',
         'title' => 'Roles',
 
-    ],
-    [
+      ],
+      [
         'name' => 'roles.update',
         'guard_name' => 'web',
         'show_name' => 'Can Update Role',
         'title' => 'Roles',
 
-    ],
-    [
+      ],
+      [
         'name' => 'roles.destroy',
         'show_name' => 'Can Delete Role',
         'guard_name' => 'web',
         'title' => 'Roles',
 
-    ],
-    [
+      ],
+      [
         'name' => 'roles.destroy-selected',
         'guard_name' => 'web',
         'show_name' => 'Can Delete Selected Roles',
         'title' => 'Roles',
 
-    ],
-    [
+      ],
+      [
         'name' => 'roles.make-default',
         'guard_name' => 'web',
         'show_name' => 'Can Make Default Roles',
         'title' => 'Roles',
 
-    ],
+      ],
 
-    // Permissions Routes
-    [
+      // Permissions Routes
+      [
         'name' => 'permissions.index',
         'guard_name' => 'web',
         'show_name' => 'Can View Permissions',
         'title' => 'Permissions',
 
-    ],
-    [
+      ],
+      [
         'name' => 'permissions.view_all',
         'guard_name' => 'web',
         'show_name' => 'Can View All Site Roles Permissions',
         'title' => 'Permissions',
 
-    ],
-    // [
-    //     'name' => 'permissions.create',
-    //     'guard_name' => 'web',
-    //     'show_name' => 'Can Create Permissions',
-    //     'title' => 'Permissions',
-
-    // ],
-    // [
-    //     'name' => 'permissions.store',
-    //     'guard_name' => 'web',
-    //     'show_name' => 'Can Store Permissions',
-    //     'title' => 'Permissions',
-
-    // ],
-    // [
-    //     'name' => 'permissions.edit',
-    //     'guard_name' => 'web',
-    //     'show_name' => 'Can Edit Permissions',
-    //     'title' => 'Permissions',
-
-    // ],
-    // [
-    //     'name' => 'permissions.update',
-    //     'guard_name' => 'web',
-    //     'show_name' => 'Can Update Permissions',
-    //     'title' => 'Permissions',
-
-    // ],
-    // [
-    //     'name' => 'permissions.destroy',
-    //     'guard_name' => 'web',
-    //     'show_name' => 'Can Delete Permission',
-    //     'title' => 'Permissions',
-
-    // ],
-    // [
-    //     'name' => 'permissions.destroy-selected',
-    //     'guard_name' => 'web',
-    //     'show_name' => 'Can Delete Selected Permissions',
-    //     'title' => 'Permissions',
-
-    // ],
-    [
+      ],
+      [
         'name' => 'permissions.assign-permission',
         'show_name' => 'Can Assign Permission',
         'guard_name' => 'web',
         'title' => 'Permissions',
 
-    ],
-    [
+      ],
+      [
         'name' => 'permissions.revoke-permission',
         'show_name' => 'Can Revoke Permission',
         'guard_name' => 'web',
         'title' => 'Permissions',
 
-    ],
-    [
+      ],
+      [
         'name' => 'permissions.edit-own-permission',
         'show_name' => 'Can Edit Own Permission',
         'guard_name' => 'web',
         'title' => 'Permissions',
 
-    ],
+      ],
+      // Users
+      [
+        'name' => 'users.index',
+        'show_name' => 'Can View Users',
+        'guard_name' => 'web',
+        'title' => 'Users',
+      ],
+      // [
+      //   'name' => 'users.create',
+      //   'show_name' => 'Can Create Users',
+      //   'guard_name' => 'web',
+      //   'title' => 'Users',
+      // ],
+      // [
+      //   'name' => 'users.store',
+      //   'show_name' => 'Can Store Users',
+      //   'guard_name' => 'web',
+      //   'title' => 'Users',
+      // ],
+      [
+        'name' => 'users.edit',
+        'show_name' => 'Can Edit Users',
+        'guard_name' => 'web',
+        'title' => 'Users',
+      ],
+      [
+        'name' => 'users.update',
+        'show_name' => 'Can Update Users',
+        'guard_name' => 'web',
+        'title' => 'Users',
+      ],
+      // [
+      //   'name' => 'users.destroy-selected',
+      //   'show_name' => 'Can Suspend Selected Users',
+      //   'guard_name' => 'web',
+      //   'title' => 'Users',
+      // ],
 
 
     ];

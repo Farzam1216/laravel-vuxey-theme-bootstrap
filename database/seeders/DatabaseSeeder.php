@@ -7,13 +7,19 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        \App\Models\User::factory(30)->create();
-    }
+  /**
+   * Seed the application's database.
+   *
+   * @return void
+   */
+  public function run()
+  {
+    // \App\Models\User::factory(30)->create();
+    $this->call([
+      RolesSeeder::class,
+      PermissionTableSeeder::class,
+      UsersSeeder::class,
+
+    ]);
+  }
 }

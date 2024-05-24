@@ -18,14 +18,148 @@ class PermissionTableSeeder extends Seeder
   {
     //
     $data = [
+      [
+        'name' => 'dashboard',
+        'show_name' => 'Can View Dashboard',
+        'guard_name' => 'web',
+        'title' => 'Dashboard',
+      ],
+       // Roles Routes
+       [
+        'name' => 'roles.index',
+        'guard_name' => 'web',
+        'show_name' => 'Can View Roles',
+        'title' => 'Roles',
 
-      // multipe leads assgin
-      // [
-      //   'name' => 'sites.crm.opportunity.ajax-assign-multiple-leads',
-      //   'show_name' => 'Can Assign Multiple Leads',
-      //   'guard_name' => 'web',
-      //   'title' => 'CRM',
-      // ],
+    ],
+    [
+        'name' => 'roles.create',
+        'guard_name' => 'web',
+        'show_name' => 'Can Create Role',
+        'title' => 'Roles',
+
+    ],
+    [
+        'name' => 'roles.store',
+        'guard_name' => 'web',
+        'show_name' => 'Can Store Role',
+        'title' => 'Roles',
+
+    ],
+    [
+        'name' => 'roles.edit',
+        'guard_name' => 'web',
+        'show_name' => 'Can Edit Role',
+        'title' => 'Roles',
+
+    ],
+    [
+        'name' => 'roles.update',
+        'guard_name' => 'web',
+        'show_name' => 'Can Update Role',
+        'title' => 'Roles',
+
+    ],
+    [
+        'name' => 'roles.destroy',
+        'show_name' => 'Can Delete Role',
+        'guard_name' => 'web',
+        'title' => 'Roles',
+
+    ],
+    [
+        'name' => 'roles.destroy-selected',
+        'guard_name' => 'web',
+        'show_name' => 'Can Delete Selected Roles',
+        'title' => 'Roles',
+
+    ],
+    [
+        'name' => 'roles.make-default',
+        'guard_name' => 'web',
+        'show_name' => 'Can Make Default Roles',
+        'title' => 'Roles',
+
+    ],
+
+    // Permissions Routes
+    [
+        'name' => 'permissions.index',
+        'guard_name' => 'web',
+        'show_name' => 'Can View Permissions',
+        'title' => 'Permissions',
+
+    ],
+    [
+        'name' => 'permissions.view_all',
+        'guard_name' => 'web',
+        'show_name' => 'Can View All Site Roles Permissions',
+        'title' => 'Permissions',
+
+    ],
+    // [
+    //     'name' => 'permissions.create',
+    //     'guard_name' => 'web',
+    //     'show_name' => 'Can Create Permissions',
+    //     'title' => 'Permissions',
+
+    // ],
+    // [
+    //     'name' => 'permissions.store',
+    //     'guard_name' => 'web',
+    //     'show_name' => 'Can Store Permissions',
+    //     'title' => 'Permissions',
+
+    // ],
+    // [
+    //     'name' => 'permissions.edit',
+    //     'guard_name' => 'web',
+    //     'show_name' => 'Can Edit Permissions',
+    //     'title' => 'Permissions',
+
+    // ],
+    // [
+    //     'name' => 'permissions.update',
+    //     'guard_name' => 'web',
+    //     'show_name' => 'Can Update Permissions',
+    //     'title' => 'Permissions',
+
+    // ],
+    // [
+    //     'name' => 'permissions.destroy',
+    //     'guard_name' => 'web',
+    //     'show_name' => 'Can Delete Permission',
+    //     'title' => 'Permissions',
+
+    // ],
+    // [
+    //     'name' => 'permissions.destroy-selected',
+    //     'guard_name' => 'web',
+    //     'show_name' => 'Can Delete Selected Permissions',
+    //     'title' => 'Permissions',
+
+    // ],
+    [
+        'name' => 'permissions.assign-permission',
+        'show_name' => 'Can Assign Permission',
+        'guard_name' => 'web',
+        'title' => 'Permissions',
+
+    ],
+    [
+        'name' => 'permissions.revoke-permission',
+        'show_name' => 'Can Revoke Permission',
+        'guard_name' => 'web',
+        'title' => 'Permissions',
+
+    ],
+    [
+        'name' => 'permissions.edit-own-permission',
+        'show_name' => 'Can Edit Own Permission',
+        'guard_name' => 'web',
+        'title' => 'Permissions',
+
+    ],
 
 
     ];
@@ -43,18 +177,17 @@ class PermissionTableSeeder extends Seeder
         'name' => $permission['name'],
         'guard_name' => 'web',
       ], [
-        // 'is_new' => $permission['is_new'] ?? false,
         'show_name' => $permission['show_name'],
         'title' => $permission['title'] ?? null,
       ]);
     }
 
-    (new Role())->find(1)->givePermissionTo((new Permission())->where('is_custom', false)->pluck('id'));
-    $childRoles = Role::where('parent_id', 1)->where('is_child', true)->get();
-    $parentRole = (new Role())->find(1);
+    (new Role())->find(1)->givePermissionTo((new Permission())->pluck('id'));
+    // $childRoles = Role::where('parent_id', 1)->where('is_child', true)->get();
+    // $parentRole = (new Role())->find(1);
 
-    foreach ($childRoles as $childRole) {
-      $childRole->givePermissionTo($parentRole->permissions);
-    }
+    // foreach ($childRoles as $childRole) {
+    //   $childRole->givePermissionTo($parentRole->permissions);
+    // }
   }
 }

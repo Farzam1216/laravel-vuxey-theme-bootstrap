@@ -168,6 +168,7 @@ return [
          * Package Service Providers...
          */
     Spatie\Permission\PermissionServiceProvider::class,
+    Yajra\DataTables\DataTablesServiceProvider::class,
     /*
          * Application Service Providers...
          */
@@ -177,6 +178,7 @@ return [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
+
 
   ],
 

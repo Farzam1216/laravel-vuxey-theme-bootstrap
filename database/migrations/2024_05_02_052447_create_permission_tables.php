@@ -45,6 +45,7 @@ return new class extends Migration
       $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
       $table->integer('parent_id')->default(0);
       $table->boolean('has_child')->default(0);
+      $table->boolean('is_child')->default(0);
       $table->timestamps();
       if ($teams || config('permission.testing')) {
         $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);

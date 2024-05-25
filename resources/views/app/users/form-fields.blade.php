@@ -3,7 +3,7 @@
         <div class="row mb-1 align-items-end">
             <div class="col-lg-4 col-md-4 position-relative">
                 <label class="form-label fs-6" for="name">Full Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control form-control-md fs-6 @error('name') is-invalid @enderror"
+                <input type="text" required class="form-control form-control-md fs-6 @error('name') is-invalid @enderror"
                     id="name" name="name" placeholder="Full Name"
                     value="{{ isset($user) ? $user->name : old('name') }}" />
                 <small class="text-muted">Enter Full Name</small>
@@ -13,7 +13,7 @@
             </div>
             <div class="col-lg-4 col-md-4 position-relative  mt-1">
                 <label class="form-label fs-6" for="type_name">Email <span class="text-danger">*</span></label>
-                <input type="email" class="form-control form-control-md fs-6 @error('email') is-invalid @enderror"
+                <input type="email" required class="form-control form-control-md fs-6 @error('email') is-invalid @enderror"
                     id="email" name="email" placeholder="Email" autocomplete="false"
                     value="{{ isset($user) ? $user->email : old('email') }}" />
                 <small class="text-muted">Enter Email</small></br>
@@ -49,8 +49,7 @@
             @endcan
 
             <div class="col-lg-4 col-md-4 col-sm-4 mt-1">
-                <label class="form-label fs-6" for="contact">Mobile Contact <span
-                        class="text-danger">*</span></label>
+                <label class="form-label fs-6" for="contact">Mobile Contact</label>
                 <input type="tel"
                 value="{{ isset($user) ? $user->mobile_no : old('mobile_no') }}"
                     class="form-control form-control-md ContactNoError @error('mobile_no') is-invalid @enderror"
@@ -65,7 +64,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 position-relative pe-0">
                     <label class="form-label fs-6" style="font-size: 15px" for="role_id">Role <span
                             class="text-danger">*</span></label>
-                    <select class="form-select" id="role_id" name="role_id[]" multiple="multiple"
+                    <select required class="form-select" id="role_id" name="role_id[]" multiple="multiple"
                         placeholder="Select Roles">
                         <option disabled>Select Role</option>
                         @foreach ($roles as $key => $value)

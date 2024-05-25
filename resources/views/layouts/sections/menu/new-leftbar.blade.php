@@ -35,9 +35,7 @@
     </a>
 </li>
 
-@if (Auth::user()->can('permissions.index') ||
-        Auth::user()->can('roles.index') ||
-        Auth::user()->can('configurations.configView'))
+@if (Auth::user()->can('permissions.index') || Auth::user()->can('roles.index') || Auth::user()->can('users.index'))
     <li class="menu-header">
 
         <span class="menu-header-text">{{ __('Administration') }}</span>
@@ -47,9 +45,7 @@
 
 @if (Auth::user()->can('permissions.index') || Auth::user()->can('roles.index'))
     <li
-        class="menu-item {{ request()->routeIs('roles.index') ||
-        request()->routeIs('roles.create') ||
-        request()->routeIs('permissions.index')
+        class="menu-item {{ request()->routeIs('roles.*') || request()->routeIs('permissions.index') || request()->routeIs('users.*')
             ? 'active open'
             : null }}">
         <a class="menu-link menu-toggle " href="javascript:void(0)">
@@ -111,3 +107,12 @@
         </ul>
     </li>
 @endif
+
+
+{{-- @if (Auth::user()->can('permissions.index') || Auth::user()->can('roles.index') || Auth::user()->can('users.index'))
+    <li class="menu-header">
+
+        <span class="menu-header-text">{{ __('Car Settings') }}</span>
+
+    </li>
+@endif --}}

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CarCategoryController;
+use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\laravel_example\UserManagement;
 use App\Http\Controllers\PermissionController;
@@ -283,5 +285,37 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
       Route::post('users-menu', [UserController::class, 'users_menu'])->name('ajax-users-menu');
       Route::get('get-user-payroll-details', [UserController::class, 'userPayrollDetails'])->name('get-user-payroll-details');
     });
+  });
+
+  // car category routes
+  Route::group(['prefix' => 'car-categories', 'as' => 'car-categories.'], function () {
+    Route::get('/', [CarCategoryController::class, 'index'])->name('index');
+
+    Route::get('create', [CarCategoryController::class, 'create'])->name('create');
+    Route::post('store', [CarCategoryController::class, 'store'])->name('store');
+
+
+    Route::group(['prefix' => '/{id}'], function () {
+      Route::get('edit', [CarCategoryController::class, 'edit'])->name('edit');
+      Route::put('update', [CarCategoryController::class, 'update'])->name('update');
+      Route::put('destroy', [CarCategoryController::class, 'destroy'])->name('destroy');
+    });
+    Route::post('/ajax-menu/{id}', [CarCategoryController::class, 'menu'])->name('ajax-menu');
+  });
+
+  // car category routes
+  Route::group(['prefix' => 'cars', 'as' => 'cars.'], function () {
+    Route::get('/', [CarController::class, 'index'])->name('index');
+
+    Route::get('create', [CarController::class, 'create'])->name('create');
+    Route::post('store', [CarController::class, 'store'])->name('store');
+
+
+    Route::group(['prefix' => '/{id}'], function () {
+      Route::get('edit', [CarController::class, 'edit'])->name('edit');
+      Route::put('update', [CarController::class, 'update'])->name('update');
+      Route::put('destroy', [CarController::class, 'destroy'])->name('destroy');
+    });
+    Route::post('/ajax-menu/{id}', [CarController::class, 'menu'])->name('ajax-menu');
   });
 });

@@ -125,18 +125,18 @@ class PermissionTableSeeder extends Seeder
         'guard_name' => 'web',
         'title' => 'Users',
       ],
-      // [
-      //   'name' => 'users.create',
-      //   'show_name' => 'Can Create Users',
-      //   'guard_name' => 'web',
-      //   'title' => 'Users',
-      // ],
-      // [
-      //   'name' => 'users.store',
-      //   'show_name' => 'Can Store Users',
-      //   'guard_name' => 'web',
-      //   'title' => 'Users',
-      // ],
+      [
+        'name' => 'users.create',
+        'show_name' => 'Can Create Users',
+        'guard_name' => 'web',
+        'title' => 'Users',
+      ],
+      [
+        'name' => 'users.store',
+        'show_name' => 'Can Store Users',
+        'guard_name' => 'web',
+        'title' => 'Users',
+      ],
       [
         'name' => 'users.edit',
         'show_name' => 'Can Edit Users',
@@ -155,6 +155,71 @@ class PermissionTableSeeder extends Seeder
       //   'guard_name' => 'web',
       //   'title' => 'Users',
       // ],
+
+      // car categories
+      [
+        'name' => 'car-categories.index',
+        'show_name' => 'Can View Car Categories',
+        'guard_name' => 'web',
+        'title' => 'Car Categories',
+      ],
+      [
+        'name' => 'car-categories.create',
+        'show_name' => 'Can Create Car Categories',
+        'guard_name' => 'web',
+        'title' => 'Car Categories',
+      ],
+      [
+        'name' => 'car-categories.store',
+        'show_name' => 'Can Store Car Categories',
+        'guard_name' => 'web',
+        'title' => 'Car Categories',
+      ],
+      [
+        'name' => 'car-categories.edit',
+        'show_name' => 'Can Edit Car Categories',
+        'guard_name' => 'web',
+        'title' => 'Car Categories',
+      ],
+      [
+        'name' => 'car-categories.update',
+        'show_name' => 'Can Update Car Categories',
+        'guard_name' => 'web',
+        'title' => 'Car Categories',
+      ],
+
+      // cars
+      [
+        'name' => 'cars.index',
+        'show_name' => 'Can View Car Details',
+        'guard_name' => 'web',
+        'title' => 'Car Details',
+      ],
+      [
+        'name' => 'cars.create',
+        'show_name' => 'Can Create Car Details',
+        'guard_name' => 'web',
+        'title' => 'Car Details',
+      ],
+      [
+        'name' => 'cars.store',
+        'show_name' => 'Can Store Car Details',
+        'guard_name' => 'web',
+        'title' => 'Car Details',
+      ],
+      [
+        'name' => 'cars.edit',
+        'show_name' => 'Can Edit Car Details',
+        'guard_name' => 'web',
+        'title' => 'Car Details',
+      ],
+      [
+        'name' => 'cars.update',
+        'show_name' => 'Can Update Car Details',
+        'guard_name' => 'web',
+        'title' => 'Car Details',
+      ],
+
 
 
     ];

@@ -8,16 +8,20 @@ ini_set('max_execution_time', 500);
 use App\DataTables\UserDataTable;
 use App\Http\Requests\users\storeRequest as userStoreRequest;
 use App\Http\Requests\users\updateRequest as userUpdateRequest;
+use App\Mail\RegisterUserPasswordMail;
 use App\Models\User;
 use App\Services\User\Interface\UserInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log as FacadesLog;
+use Illuminate\Support\Facades\Mail;
 use Log;
 use Spatie\Permission\Models\Permission as ModelsPermission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -38,9 +42,11 @@ class UserController extends Controller
   public function index(UserDataTable $dataTable)
   {
     $data = [
-      'createPermission' => 0,
+      'createPermission' =>  Auth::user()->can('users.create'),
       'selectedDeletePermission' => Auth::user()->can('users.destroy-selected'),
     ];
+
+    // dd($data);
 
     return $dataTable->with($data)->render('app.users.index', $data);
   }
@@ -71,8 +77,6 @@ class UserController extends Controller
 
       $data = [
         'role' => $role,
-        'city' => [],
-        'state' => [],
       ];
       return view('app.users.create', $data);
     } else {
@@ -86,15 +90,69 @@ class UserController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(userStoreRequest $request)
+  public function store(Request $request)
   {
 
+
+    $data = $request->all();
+    $validator = Validator::make($data, [
+      'name' => ['required', 'string'],
+      'mobile_no' => ['required'],
+      'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+      // 'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    if ($validator->fails()) {
+      return redirect()->back()->withErrors($validator)->withInput();
+    }
     try {
       if (!request()->ajax()) {
-
         $inputs = $request->all();
 
-        $this->userInterface->store(1, $inputs, null);
+        $password = Str::random(8);
+        $user = User::create([
+          'name' => $inputs['name'],
+          'email' => $inputs['email'],
+          'mobile_no' => $inputs['mobile_no'],
+          'password' => Hash::make($password),
+        ]);
+
+        Mail::to($user->email)->send(new RegisterUserPasswordMail($user, $password));
+        // $user->assignRole([$inputs['role_id']]);
+
+        // Process roles
+        foreach ($user->roles as $role) {
+          if ($role->is_child && in_array($role->parent_id, $inputs['role_id'])) {
+            $inputs['role_id'][] = $role->id;
+            unset($inputs['role_id'][array_search($role->parent_id, $inputs['role_id'])]);
+          }
+        }
+
+        // Get role names instead of IDs for syncing
+        $roleNames = Role::whereIn('id', $inputs['role_id'])->pluck('name')->toArray();
+        $user->syncRoles($roleNames);
+
+        foreach ($user->roles as $role) {
+          if (!$role->is_child) {
+            $rolename = $role->name . $user->id;
+            $newrole = Role::updateOrCreate([
+              'name' => $rolename,
+              'guard_name' => 'web',
+              'parent_id' => $role->id,
+              'is_child' => true
+            ]);
+
+            // Assign the new role to the user
+            $user->assignRole($newrole);
+
+            // Transfer permissions from parent role to new role
+            $newrole->syncPermissions($role->permissions);
+
+            // Remove the original parent role from the user
+            $user->removeRole($role);
+          }
+        }
+
 
         return redirect()->route('users.index')->withSuccess(__('lang.commons.data_saved'));
       } else {
@@ -202,56 +260,62 @@ class UserController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $site_id = 1;
+    $data = $request->all();
+    $validator = Validator::make($data, [
+      'name' => ['required', 'string'],
+      'mobile_no' => ['required'],
+      'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
+      // 'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
     $id = decryptParams($id);
-    // try {
-    if (!request()->ajax()) {
-      $inputs = $request->all();
-      $data['name'] = $inputs['name'];
-      $data['email'] = $inputs['email'];
-      $data['mobile_no'] = $inputs['mobile_no'];
-      User::where('id', $id)->update($data);
-      $user = User::find($id);
+    try {
+      if (!request()->ajax()) {
+        $inputs = $request->all();
+        $data['name'] = $inputs['name'];
+        $data['email'] = $inputs['email'];
+        $data['mobile_no'] = $inputs['mobile_no'];
+        User::where('id', $id)->update($data);
+        $user = User::find($id);
 
-      // Process roles
-      foreach ($user->roles as $role) {
-        if ($role->is_child && in_array($role->parent_id, $inputs['role_id'])) {
-          $inputs['role_id'][] = $role->id;
-          unset($inputs['role_id'][array_search($role->parent_id, $inputs['role_id'])]);
+        // Process roles
+        foreach ($user->roles as $role) {
+          if ($role->is_child && in_array($role->parent_id, $inputs['role_id'])) {
+            $inputs['role_id'][] = $role->id;
+            unset($inputs['role_id'][array_search($role->parent_id, $inputs['role_id'])]);
+          }
         }
-      }
 
-      // Get role names instead of IDs for syncing
-      $roleNames = Role::whereIn('id', $inputs['role_id'])->pluck('name')->toArray();
-      $user->syncRoles($roleNames);
+        // Get role names instead of IDs for syncing
+        $roleNames = Role::whereIn('id', $inputs['role_id'])->pluck('name')->toArray();
+        $user->syncRoles($roleNames);
 
-      foreach ($user->roles as $role) {
-        if (!$role->is_child) {
-          $rolename = $role->name . $user->id;
-          $newrole = Role::updateOrCreate([
-            'name' => $rolename,
-            'guard_name' => 'web',
-            'parent_id' => $role->id,
-            'is_child' => true
-          ]);
+        foreach ($user->roles as $role) {
+          if (!$role->is_child) {
+            $rolename = $role->name . $user->id;
+            $newrole = Role::updateOrCreate([
+              'name' => $rolename,
+              'guard_name' => 'web',
+              'parent_id' => $role->id,
+              'is_child' => true
+            ]);
 
-          // Assign the new role to the user
-          $user->assignRole($newrole);
+            // Assign the new role to the user
+            $user->assignRole($newrole);
 
-          // Transfer permissions from parent role to new role
-          $newrole->syncPermissions($role->permissions);
+            // Transfer permissions from parent role to new role
+            $newrole->syncPermissions($role->permissions);
 
-          // Remove the original parent role from the user
-          $user->removeRole($role);
+            // Remove the original parent role from the user
+            $user->removeRole($role);
+          }
         }
+        return redirect()->route('users.index',)->withSuccess(__('Data updated'));
+      } else {
+        abort(403);
       }
-      return redirect()->route('users.index',)->withSuccess(__('Data updated'));
-    } else {
-      abort(403);
+    } catch (Exception $ex) {
+      return redirect()->route('users.index',)->withDanger(__('lang.commons.something_went_wrong') . ' ' . $ex->getMessage());
     }
-    // } catch (Exception $ex) {
-    //   return redirect()->route('users.index',)->withDanger(__('lang.commons.something_went_wrong') . ' ' . $ex->getMessage());
-    // }
   }
 
   public function editPermissions(Request $request, $id)

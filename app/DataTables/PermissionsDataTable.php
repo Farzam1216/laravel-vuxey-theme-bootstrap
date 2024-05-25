@@ -82,7 +82,7 @@ class PermissionsDataTable extends DataTable
             ->fixedHeader()
             ->fixedColumnsLeftColumns(1)
             ->minifiedAjax()
-            ->stateSave()
+            // ->stateSave()
             ->serverSide()
             ->processing()
             // ->dom('BlfrtipC')

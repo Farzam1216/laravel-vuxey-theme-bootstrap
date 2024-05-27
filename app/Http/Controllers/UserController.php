@@ -154,13 +154,13 @@ class UserController extends Controller
         }
 
 
-        return redirect()->route('users.index')->withSuccess(__('lang.commons.data_saved'));
+        return redirect()->route('users.index')->withSuccess(__('data_saved'));
       } else {
         abort(403);
       }
     } catch (Exception $ex) {
       FacadesLog::error($ex);
-      return redirect()->route('users.index')->withDanger(__('lang.commons.something_went_wrong') . ' ' . $ex->getMessage());
+      return redirect()->route('users.index')->withDanger(__('something_went_wrong') . ' ' . $ex->getMessage());
     }
   }
 

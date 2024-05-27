@@ -93,7 +93,7 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h3 class=" mb-1 fw-bold">Welcome to {{ config('variables.templateName') }}! 👋</h3>
+                        <h3 class=" mb-1 fw-bold">Welcome to {{ env('APP_NAME') }}! 👋</h3>
                         <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
                         <form id="formAuthentication" class="mb-3" method="POST" action="{{ route('login') }}">

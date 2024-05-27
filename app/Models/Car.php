@@ -25,11 +25,16 @@ class Car extends Model
     'full_day_rate_without_fuel',
     'full_day_rate_with_driver',
     'full_day_rate_without_driver',
-    'per_km_with_fuel',
-    'per_km_without_fuel',
+    'per_km_rate_with_fuel',
+    'per_km_rate_without_fuel',
     'longitude',
     'latitude',
     'sale_price',
     'discounted_sale_price',
   ];
+
+  public function category()
+  {
+    return $this->belongsTo(CarCategory::class, 'category_id');
+  }
 }

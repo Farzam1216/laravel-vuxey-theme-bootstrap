@@ -7,6 +7,7 @@ use App\Http\Controllers\laravel_example\UserManagement;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -319,3 +320,15 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
     Route::post('/ajax-menu/{id}', [CarController::class, 'menu'])->name('ajax-menu');
   });
 });
+
+// files upload routes
+Route::post('/files/getUploadId', function () {
+  return getFileUploadId();
+});
+Route::patch('/files/uploadfileChunk', [function (Request $request) {
+  return uploadFilePatch($request);
+}]);
+
+Route::delete('/files/revertFile', [function (Request $request) {
+  return revertFileUpload($request);
+}]);

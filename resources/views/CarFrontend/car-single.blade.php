@@ -40,13 +40,35 @@
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
-                        {{-- <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-        <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-        <li class="nav-item"><a href="car.html" class="nav-link">Cars</a></li>
-        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li> --}}
+
+                        @if (Auth::check())
+                            <li class="nav-item active"><a href="#" class="nav-link">{{ Auth::user()->name }}</a>
+                            </li>
+                            @can('dashboard')
+                                <li class="nav-item "><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
+                                </li>
+                            @endcan
+                            <li class="nav-item "><a href="{{ route('logout-user') }}" class="nav-link">Logout</a>
+                            </li>
+
+                            <form method="POST" id="logout-form" action="{{ route('logout') }}">
+                                @csrf
+                            </form>
+                        @else
+                            <li class="nav-item "><a
+                                    href="{{ Route::has('register') ? route('register') : 'javascript:void(0)' }}"
+                                    class="nav-link">Register</a>
+                            </li>
+                            <li class="nav-item "><a
+                                    href="{{ Route::has('login') ? route('login') : 'javascript:void(0)' }}"
+                                    class="nav-link">Login</a>
+                            </li>
+
+                            <form method="POST" id="logout-form" action="{{ route('logout') }}">
+                                @csrf
+                            </form>
+                        @endif
+
                     </ul>
                 </div>
             </div>
@@ -76,7 +98,7 @@
             </div>
         </section>
 
-         <section class="ftco-section ftco-no-pt bg-light">
+        <section class="ftco-section ftco-no-pt bg-light">
             <div class="container">
                 <div class="row no-gutters">
                     <div class="col-md-12	featured-top">
@@ -84,6 +106,24 @@
                             <div class="col-md-4 d-flex align-items-center">
                                 <form action="#" class="request-form ftco-animate bg-primary">
                                     <h2>Make your trip</h2>
+                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="">
+                                    <div class="form-group">
+                                        <label for="" class="label">User Name</label>
+                                        <input type="text" readonly class="form-control"
+                                            value="{{ Auth::user()->name }}" placeholder="City, Airport, Station, etc">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="label">User Email</label>
+                                        <input type="text" readonly class="form-control"
+                                            value="{{ Auth::user()->email }}"
+                                            placeholder="City, Airport, Station, etc">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="label">User Mobile No.</label>
+                                        <input type="text" readonly class="form-control"
+                                            value="{{ Auth::user()->mobile_no }}"
+                                            placeholder="City, Airport, Station, etc">
+                                    </div>
                                     <div class="form-group">
                                         <label for="" class="label">Pick-up location</label>
                                         <input type="text" class="form-control"
@@ -152,8 +192,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect
-                                            Car</a></p>
+                                    {{-- <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect
+                                            Car</a></p> --}}
                                 </div>
                             </div>
                         </div>
@@ -533,10 +573,10 @@
                         </div>
                     @endforeach
                     <div class="row mt-5">
-                      <div class="col text-center">
-                          {{ $cars->links('pagination::bootstrap-4') }}
-                      </div>
-                  </div>
+                        <div class="col text-center">
+                            {{ $cars->links('pagination::bootstrap-4') }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

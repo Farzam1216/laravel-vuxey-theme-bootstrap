@@ -340,7 +340,6 @@ Route::get('/', function () {
 Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('frontend');
 
 Route::group(['middleware' => ['auth']], function () {
-
   Route::get('/car-booking/{id}', [App\Http\Controllers\CarBookingController::class, 'index'])->name('car-booking');
   Route::get('/car-location/{id}', [App\Http\Controllers\CarController::class, 'location'])->name('car-location');
 });

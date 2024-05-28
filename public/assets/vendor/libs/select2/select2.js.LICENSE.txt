@@ -1,5 +1,5 @@
 /*!
- * Select2 4.0.13
+ * Select2 4.0.1
  * https://select2.github.io
  *
  * Released under the MIT license
@@ -15,6 +15,7 @@
  */
 
 /**
- * @license almond 0.3.3 Copyright jQuery Foundation and other contributors.
- * Released under MIT license, http://github.com/requirejs/almond/LICENSE
+ * @license almond 0.3.1 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/jrburke/almond for details
  */

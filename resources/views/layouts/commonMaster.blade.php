@@ -23,6 +23,9 @@
         <link rel="canonical" href="{{ config('variables.productPage') ? config('variables.productPage') : '' }}">
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
         {{-- @vite('resources/js/app.js', 'vendor/courier/build') --}}
 
         <!-- Include Styles -->

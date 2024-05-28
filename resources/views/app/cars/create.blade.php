@@ -1,11 +1,8 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Create Car Category')
+@section('title', 'Create Cars')
 
 @section('page-vendor')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/signature-pad/css/jquery-ui.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/signature-pad/css/signature.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/libs/intel-tel-input/intlTelInput.css') }}">
 
 @endsection
 @section('page-css')
@@ -39,24 +36,9 @@
     </style>
 @endsection
 
-{{-- @section('breadcrumbs')
-    <div class="content-header-left col-md-9 col-12">
-        <div class="row breadcrumbs-top mb-0">
-            <div class="col-12 align-items-center d-flex">
-                <h2 class="content-header-title float-start mb-0">Create User</h2>
-                <div class="breadcrumb-wrapper align-items-center">
-                    {{ Breadcrumbs::render('car-categories.create', encryptParams($site_id)) }}
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection --}}
-
 @section('content')
-    <form id="userForm" class="form form-vertical" class="signature-form" enctype="multipart/form-data"
-        action="{{ route('car-categories.store') }}" method="POST">
-        <input type="hidden" id="signer_id" name="signer_id">
-        <input type="hidden" name="method" value="sign_now">
+    <form id="carForm" class="form form-vertical" class="signature-form" enctype="multipart/form-data"
+        action="{{ route('cars.store') }}" method="POST">
         <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-12 position-relative">
 
@@ -93,14 +75,14 @@
                         </div>
                         <hr>
 
-                        @can('car-categories.store')
+                        @can('cars.store')
                             <button type="submit" id="SaveUserBtn"
                                 class="btn w-100 btn-outline-success waves-effect waves-float waves-light buttonToBlockUI mb-2">
                                 <i data-feather='save'></i>
                                 Save
                             </button>
                         @endcan
-                        <a href="{{ route('car-categories.index') }}"
+                        <a href="{{ route('cars.index') }}"
                             class="btn w-100 btn-outline-danger waves-effect waves-float waves-light mb-2">
                             <i data-feather='x'></i>
                             {{ __('Cancel') }}
@@ -119,13 +101,7 @@
 @endsection
 
 @section('page-js')
-
     <script src="{{ asset('assets/vendor/libs/jquery/validation/jquery.validate.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/intel-tel-input/intlTelInput.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/intel-tel-input/utils.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/signature-pad/js/jquery-ui.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/vendor/libs/signaturePad/signature-pad.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/libs/signature-pad/js/signature_pad.js') }}"></script> --}}
 @endsection
 
 @section('custom-js')
@@ -181,6 +157,20 @@
             credits: {
                 label: '',
                 url: ''
+            }
+        });
+
+        var validator = $("#carForm").validate({
+            rules: {
+                'name': {
+                    required: true,
+                },
+            },
+            errorClass: 'is-invalid text-danger',
+            errorElement: "span",
+            wrapper: "div",
+            submitHandler: function(form) {
+                form.submit();
             }
         });
     </script>

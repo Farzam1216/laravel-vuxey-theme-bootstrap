@@ -138,8 +138,8 @@
                             class="text-danger">*</span></label>
                     <input type="number"
                         class="form-control form-control-md @error('per_km_rate_with_fuel') is-invalid @enderror"
-                        id="per_km_rate_with_fuel" name="per_km_rate_with_fuel" placeholder="Per Kilometer With Fuel" required
-                        value="{{ isset($car) ? $car->per_km_rate_with_fuel : null }}" />
+                        id="per_km_rate_with_fuel" name="per_km_rate_with_fuel" placeholder="Per Kilometer With Fuel"
+                        required value="{{ isset($car) ? $car->per_km_rate_with_fuel : null }}" />
                     @error('per_km_rate_with_fuel')
                         <div class="invalid-tooltip">{{ $message }}</div>
                     @enderror
@@ -150,20 +150,10 @@
                             class="text-danger">*</span></label>
                     <input type="number"
                         class="form-control form-control-md @error('per_km_rate_without_fuel') is-invalid @enderror"
-                        id="per_km_rate_without_fuel" name="per_km_rate_without_fuel" placeholder="Per Kilometer Without Fuel"
-                        required value="{{ isset($car) ? $car->per_km_rate_without_fuel : null }}" />
+                        id="per_km_rate_without_fuel" name="per_km_rate_without_fuel"
+                        placeholder="Per Kilometer Without Fuel" required
+                        value="{{ isset($car) ? $car->per_km_rate_without_fuel : null }}" />
                     @error('per_km_rate_without_fuel')
-                        <div class="invalid-tooltip">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
-                    <label class="form-label fs-6" for="name">Longitude<span class="text-danger">*</span></label>
-                    <input type="text"
-                        class="form-control form-control-md @error('longitude') is-invalid @enderror" id="longitude"
-                        name="longitude" placeholder="Longitude" required
-                        value="{{ isset($car) ? $car->longitude : null }}" />
-                    @error('longitude')
                         <div class="invalid-tooltip">{{ $message }}</div>
                     @enderror
                 </div>
@@ -175,6 +165,17 @@
                         name="latitude" placeholder="Latitude" required
                         value="{{ isset($car) ? $car->latitude : null }}" />
                     @error('latitude')
+                        <div class="invalid-tooltip">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
+                    <label class="form-label fs-6" for="name">Longitude<span class="text-danger">*</span></label>
+                    <input type="text"
+                        class="form-control form-control-md @error('longitude') is-invalid @enderror" id="longitude"
+                        name="longitude" placeholder="Longitude" required
+                        value="{{ isset($car) ? $car->longitude : null }}" />
+                    @error('longitude')
                         <div class="invalid-tooltip">{{ $message }}</div>
                     @enderror
                 </div>

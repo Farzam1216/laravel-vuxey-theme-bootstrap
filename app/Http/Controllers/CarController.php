@@ -65,6 +65,8 @@ class CarController extends Controller
       'model' => $request->model,
       'owner_name' => $request->owner_name,
       'owner_contact_no' => $request->owner_contact_no,
+      'owner_email' => $request->owner_email ?? null,
+
       // 'description' => $,
       'full_day_rate_with_fuel' => $request->full_day_rate_with_fuel,
       'full_day_rate_without_fuel' => $request->full_day_rate_without_fuel,
@@ -158,6 +160,7 @@ class CarController extends Controller
       'model' => $request->model,
       'owner_name' => $request->owner_name,
       'owner_contact_no' => $request->owner_contact_no,
+      'owner_email' => $request->owner_email ?? null,
       // 'description' => $,
       'full_day_rate_with_fuel' => $request->full_day_rate_with_fuel,
       'full_day_rate_without_fuel' => $request->full_day_rate_without_fuel,
@@ -219,5 +222,17 @@ class CarController extends Controller
       'id' => $car->id,
     ];
     return view('app.cars.actions', $data);
+  }
+
+  public function location($id)
+  {
+    $car = Car::where('id', $id)->first();
+    $data = [
+      'id' => $car->id,
+      'latitude' => $car->latitude,
+      'longitude' => $car->longitude,
+      'car' => $car,
+    ];
+    return view('CarFrontend/carLocation', $data);
   }
 }

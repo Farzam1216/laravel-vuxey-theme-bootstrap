@@ -412,4 +412,10 @@ class UserController extends Controller
       abort(403);
     }
   }
+
+  public function logout(Request $request)
+  {
+    Auth::logout();
+    return redirect()->route('frontend');
+  }
 }

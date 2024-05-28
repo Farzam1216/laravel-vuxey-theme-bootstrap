@@ -13,4 +13,9 @@ class DashboardController extends Controller
     $cars = Car::with('category')->paginate(9);
     return view('CarFrontend.index', compact('cars'));
   }
+
+  public function dashboard()
+  {
+    return view('app.dashboard');
+  }
 }

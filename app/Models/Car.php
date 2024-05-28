@@ -22,6 +22,7 @@ class Car extends Model implements HasMedia
     'model',
     'owner_name',
     'owner_contact_no',
+    'owner_email',
     'description',
     'full_day_rate_with_fuel',
     'full_day_rate_without_fuel',

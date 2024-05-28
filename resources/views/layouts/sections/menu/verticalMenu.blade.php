@@ -11,7 +11,9 @@
                 <span class="app-brand-logo demo">
                     @include('_partials.macros', ['height' => 20])
                 </span>
-                <span class="app-brand-text demo menu-text fw-bold">{{ config('variables.templateName') }}</span>
+
+
+                <span class="app-brand-text demo menu-text fw-bold">{{ env('APP_NAME') }}</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">

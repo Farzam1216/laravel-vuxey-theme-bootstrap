@@ -3,3 +3,7 @@
         Edit Car Details
     </a>
 @endcan
+
+<a class="dropdown-item" href="{{ route('car-location', ['id' => $id]) }}">
+    View Car Location
+</a>

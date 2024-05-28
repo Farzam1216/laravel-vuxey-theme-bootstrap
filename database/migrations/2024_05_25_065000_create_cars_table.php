@@ -25,6 +25,7 @@ return new class extends Migration
       $table->string('model')->nullable();
       $table->string('owner_name')->nullable();
       $table->string('owner_contact_no')->nullable();
+      $table->string('owner_email')->nullable();
       $table->longText('description')->nullable();
       $table->double('full_day_rate_with_fuel')->nullable();
       $table->double('full_day_rate_without_fuel')->nullable();

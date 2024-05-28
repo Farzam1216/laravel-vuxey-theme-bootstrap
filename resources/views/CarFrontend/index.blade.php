@@ -40,7 +40,38 @@
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
+
+                        @if (Auth::check())
+                            <li class="nav-item active"><a href="#" class="nav-link">{{ Auth::user()->name }}</a>
+                            </li>
+                            @can('dashboard')
+
+                            <li class="nav-item "><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
+                            </li>
+                            @endcan
+                            <li class="nav-item "><a href="{{ route('logout-user') }}"
+                                    class="nav-link">Logout</a>
+                            </li>
+
+                            <form method="POST" id="logout-form" action="{{ route('logout') }}">
+                                @csrf
+                            </form>
+                        @else
+                            <li class="nav-item "><a  href="{{ Route::has('register') ? route('register') : 'javascript:void(0)' }}" class="nav-link">Register</a>
+                            </li>
+                            <li class="nav-item "><a
+                                    href="{{ Route::has('login') ? route('login') : 'javascript:void(0)' }}"
+                                    class="nav-link">Login</a>
+                            </li>
+
+                            <form method="POST" id="logout-form" action="{{ route('logout') }}">
+                                @csrf
+                            </form>
+
+
+                        @endif
+
+                        {{-- <li class="nav-item active"><a href="#" class="nav-link">Home</a></li> --}}
                         {{-- <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
 	          <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>

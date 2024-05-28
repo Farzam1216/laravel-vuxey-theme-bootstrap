@@ -221,12 +221,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::group(['middleware' => ['auth', 'permission']], function () {
   // Route::group(['middleware' => ['auth']], function () {
 
-  Route::get('/', function () {
-    return redirect()->route('dashboard');
-  });
+  // Route::get('/', function () {
+  //   return redirect()->route('dashboard');
+  // });
 
-  Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
-
+  Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'dashboard'])->name('dashboard');
   //Role Routes
   Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
     Route::get('/', [RoleController::class, 'index'])->name('index');
@@ -338,9 +337,12 @@ Route::get('/', function () {
   return redirect()->route('dashboard');
 });
 
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('frontend');
 
 Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/car-booking/{id}', [App\Http\Controllers\CarBookingController::class, 'index'])->name('car-booking');
+  Route::get('/car-location/{id}', [App\Http\Controllers\CarController::class, 'location'])->name('car-location');
 });
+
+Route::get('/logout-user', [App\Http\Controllers\UserController::class, 'logout'])->name('logout-user');

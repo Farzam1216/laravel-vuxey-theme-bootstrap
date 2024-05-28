@@ -1128,8 +1128,9 @@ if (!function_exists('generateCustomFields')) {
 if (!function_exists('changeImageDirectoryPermission')) {
   function changeImageDirectoryPermission()
   {
-    $path = public_path() . '/app-assets/server-uploads';
-    // exec('chmod -R 775 ' . public_path());
+    $path = public_path() . '/app-assets/server-uploads/';
+    // exec('chmod -R 775 ' . storage_path());
+    // $path = public_path();
     if (is_dir($path)) {
       exec('chmod -R 755 ' . $path);
 

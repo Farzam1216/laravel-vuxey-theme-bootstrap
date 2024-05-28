@@ -48,7 +48,7 @@
                     <input type="text"
                         class="form-control form-control-md @error('registration_no') is-invalid @enderror"
                         id="registration_no" name="registration_no" placeholder="Registration No" required
-                        value="{{ isset($car) ? $car->registration_no : null }}" />
+                        value="{{ isset($car) ? $car->reg_no : null }}" />
                     @error('registration_no')
                         <div class="invalid-tooltip">{{ $message }}</div>
                     @enderror

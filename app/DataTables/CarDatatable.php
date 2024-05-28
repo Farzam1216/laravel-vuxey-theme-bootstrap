@@ -34,6 +34,20 @@ class CarDatatable extends DataTable
 
       ->editColumn('name', function ($user) {
 
+        // if(isset($user->getMedia('photo_attachment')[0]))
+        // {
+        //   // return $user->getMedia('photo_attachment')[0]->getUrl();
+        //   return '<div class="d-flex justify-content-start align-items-center product-name"><div class="avatar-wrapper"><div class="avatar avatar me-2 rounded-2 bg-label-secondary"><img src="'.$user->getMedia('photo_attachment')[0]->getUrl().'" alt="Product-9" class="rounded-2"></div></div><div class="d-flex flex-column"><h6 class="text-body text-nowrap mb-0">'.$user->name.'</h6></div></div>';
+
+        // }else{
+
+          // $avatar ='https://ui-avatars.com/api/?background=eae8fd&color=7367f0&name=' . $user->name;
+          // return '<div class="d-flex justify-content-start align-items-center product-name"><div class="avatar-wrapper"><div class="avatar avatar me-2 rounded-2 bg-label-secondary"><img src="'.$avatar.'" alt="Product-9" class="rounded-2"></div></div><div class="d-flex flex-column"><h6 class="text-body text-nowrap mb-0">'.$user->name.'</h6></div></div>';
+
+        // }
+
+        // return '<div class="d-flex justify-content-start align-items-center product-name"><div class="avatar-wrapper"><div class="avatar avatar me-2 rounded-2 bg-label-secondary"><img src="https://demos.pixinvent.com/vuexy-html-laravel-admin-template/demo/assets/img/ecommerce-images/product-9.png" alt="Product-9" class="rounded-2"></div></div><div class="d-flex flex-column"><h6 class="text-body text-nowrap mb-0">'.$user->name.'</h6><small class="text-muted text-truncate d-none d-sm-block">Air Jordan is a line of basketball shoes produced by Nike</small></div></div>';
+        // <img src="https://demos.pixinvent.com/vuexy-html-laravel-admin-template/demo/assets/img/ecommerce-images/product-9.png" alt="Product-9" class="rounded-2">
         return $user->name ?? '-';
       })
       ->editColumn('residential_city_id', function ($user) {
@@ -82,7 +96,7 @@ class CarDatatable extends DataTable
         return $user;
       })
       ->setRowId('id')
-      ->rawColumns(array_merge($columns, ['action', 'check']));
+      ->rawColumns(array_merge($columns, ['action', 'check' ,'name']));
 
 
 

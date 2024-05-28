@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -9,6 +10,7 @@ class DashboardController extends Controller
   //
   public function index()
   {
-    return view('content.dashboard.dashboards-analytics');
+    $cars = Car::all();
+    return view('content.dashboard.dashboards-analytics' ,compact('cars'));
   }
 }

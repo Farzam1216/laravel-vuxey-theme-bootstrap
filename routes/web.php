@@ -332,3 +332,15 @@ Route::patch('/files/uploadfileChunk', [function (Request $request) {
 Route::delete('/files/revertFile', [function (Request $request) {
   return revertFileUpload($request);
 }]);
+
+
+Route::get('/', function () {
+  return redirect()->route('dashboard');
+});
+
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
+Route::group(['middleware' => ['auth']], function () {
+
+  Route::get('/car-booking/{id}', [App\Http\Controllers\CarBookingController::class, 'index'])->name('car-booking');
+});

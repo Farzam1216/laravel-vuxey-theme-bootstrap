@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -51,5 +52,17 @@ class User extends Authenticatable
   public function getActivitylogOptions(): LogOptions
   {
     return LogOptions::defaults()->useLogName(get_class($this))->logFillable()->logOnlyDirty()->dontSubmitEmptyLogs();
+  }
+
+  public function registerMediaConversions(Media $media = null): void
+  {
+
+      $this->addMediaConversion('thumb')
+          ->performOnCollections('photo_attachment')
+          ->width(1000)
+          ->height(664)
+          ->keepOriginalImageFormat()
+          ->nonQueued()
+          ->sharpen(10);
   }
 }

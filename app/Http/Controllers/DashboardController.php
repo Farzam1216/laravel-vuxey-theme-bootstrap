@@ -10,7 +10,7 @@ class DashboardController extends Controller
   //
   public function index()
   {
-    $cars = Car::all();
-    return view('content.dashboard.dashboards-analytics' ,compact('cars'));
+    $cars = Car::with('category')->paginate(9);
+    return view('CarFrontend.index', compact('cars'));
   }
 }

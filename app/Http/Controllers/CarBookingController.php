@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\CarBookingTable;
 use App\Models\Car;
 use App\Models\CarBooking;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class CarBookingController extends Controller
     //
     $car = Car::find($id);
     $cars = Car::where('id', '!=', $car->id)->with('category')->paginate(3);
-    return view('CarFrontend.car-single', compact('car' ,'cars'));
+    return view('CarFrontend.car-single', compact('car', 'cars'));
   }
 
   /**
@@ -40,6 +41,23 @@ class CarBookingController extends Controller
   public function store(Request $request)
   {
     //
+
+    $data = [
+      'car_id' => $request->car_id,
+      'user_id' => $request->user_id,
+      'pick_up_location' => $request->pickup_location,
+      'drop_off_location' => $request->dropoff_location,
+      'pick_up_date' => $request->pick_up_date,
+      'drop_off_date' => $request->dropp_of_date,
+      'rate' => $request->car_rate,
+      'discount_rate' => $request->car_rate,
+      // 'status' => $request->user_id,
+      'date' => now(),
+    ];
+
+    CarBooking::create($data);
+
+    return redirect()->back();
   }
 
   /**
@@ -85,5 +103,13 @@ class CarBookingController extends Controller
   public function destroy(CarBooking $carBooking)
   {
     //
+  }
+
+  public function details(CarBookingTable $dataTable)
+  {
+    $data = [
+      'createPermission' => false,
+    ];
+    return $dataTable->with($data)->render('car-booking', $data);
   }
 }

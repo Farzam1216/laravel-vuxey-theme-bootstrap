@@ -104,9 +104,13 @@
                     <div class="col-md-12	featured-top">
                         <div class="row no-gutters">
                             <div class="col-md-4 d-flex align-items-center">
-                                <form action="#" class="request-form ftco-animate bg-primary">
+                                <form action="{{ route('store-car-booking') }}" method="post"
+                                    class="request-form ftco-animate bg-primary">
+                                    @csrf
                                     <h2>Make your trip</h2>
                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="">
+                                    <input type="hidden" name="car_id" value="{{ $car->id }}" id="">
+
                                     <div class="form-group">
                                         <label for="" class="label">User Name</label>
                                         <input type="text" readonly class="form-control"
@@ -114,41 +118,47 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">User Email</label>
-                                        <input type="text" readonly class="form-control"
+                                        <input  type="text" readonly class="form-control"
                                             value="{{ Auth::user()->email }}"
                                             placeholder="City, Airport, Station, etc">
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">User Mobile No.</label>
-                                        <input type="text" readonly class="form-control"
+                                        <input  type="text" readonly class="form-control"
                                             value="{{ Auth::user()->mobile_no }}"
                                             placeholder="City, Airport, Station, etc">
                                     </div>
                                     <div class="form-group">
+                                        <label for="" class="label">Rent Rate</label>
+                                        <input required type="number" name="car_rate" class="form-control"
+                                            value="{{ $car->full_day_rate_with_fuel }}"
+                                            placeholder="City, Airport, Station, etc">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="" class="label">Pick-up location</label>
-                                        <input type="text" class="form-control"
+                                        <input required type="text" class="form-control" name="pickup_location"
                                             placeholder="City, Airport, Station, etc">
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">Drop-off location</label>
-                                        <input type="text" class="form-control"
+                                        <input required type="text" class="form-control" name="dropoff_location"
                                             placeholder="City, Airport, Station, etc">
                                     </div>
                                     <div class="d-flex">
                                         <div class="form-group mr-2">
                                             <label for="" class="label">Pick-up date</label>
-                                            <input type="text" class="form-control" id="book_pick_date"
-                                                placeholder="Date">
+                                            <input required type="text" class="form-control" id="book_pick_date"
+                                                name="pick_up_date" placeholder="Date">
                                         </div>
                                         <div class="form-group ml-2">
                                             <label for="" class="label">Drop-off date</label>
-                                            <input type="text" class="form-control" id="book_off_date"
-                                                placeholder="Date">
+                                            <input required type="text" class="form-control" id="book_off_date"
+                                                name="dropp_of_date" placeholder="Date">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">Pick-up time</label>
-                                        <input type="text" class="form-control" id="time_pick"
+                                        <input required type="text" class="form-control" id="time_pick" name="pickup_time"
                                             placeholder="Time">
                                     </div>
                                     <div class="form-group">
@@ -586,7 +596,8 @@
                 <div class="row mb-5">
                     <div class="col-md">
                         <div class="ftco-footer-widget mb-4">
-                            <h2 class="ftco-heading-2"><a href="#" class="logo">Car<span>book</span></a></h2>
+                            <h2 class="ftco-heading-2"><a href="#"
+                                    class="logo"><span>{{ config('app.name', 'Laravel') }}</span></a></h2>
                             <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
                                 there live the blind texts.</p>
                             <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">

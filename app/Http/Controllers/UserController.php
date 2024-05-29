@@ -92,8 +92,6 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
-
-
     $data = $request->all();
     $validator = Validator::make($data, [
       'name' => ['required', 'string'],
@@ -115,6 +113,8 @@ class UserController extends Controller
           'email' => $inputs['email'],
           'mobile_no' => $inputs['mobile_no'],
           'password' => Hash::make($password),
+          'dicount_on_number_of_bookings_per_month' => $inputs['dicount_on_number_of_bookings_per_month'],
+          'dicount_on_number_of_bookings_per_month' => $inputs['disount_percentage'],
         ]);
 
         Mail::to($user->email)->send(new RegisterUserPasswordMail($user, $password));
@@ -274,6 +274,9 @@ class UserController extends Controller
         $data['name'] = $inputs['name'];
         $data['email'] = $inputs['email'];
         $data['mobile_no'] = $inputs['mobile_no'];
+        $data['dicount_on_number_of_bookings_per_month'] = $inputs['dicount_on_number_of_bookings_per_month'];
+        $data['disount_percentage'] = $inputs['disount_percentage'];
+
         User::where('id', $id)->update($data);
         $user = User::find($id);
 

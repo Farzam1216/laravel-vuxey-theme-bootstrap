@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\DataTables\CarDatatable;
 use App\Models\Car;
+use App\Models\CarBrand;
 use App\Models\CarCategory;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,6 +36,9 @@ class CarController extends Controller
     if (!request()->ajax()) {
       $data = [
         'categories' => CarCategory::all(),
+        'brands' => CarBrand::all(),
+        'users' => User::all(),
+
       ];
       return view('app.cars.create', $data);
     } else {
@@ -56,16 +61,15 @@ class CarController extends Controller
 
     $data = [
       'category_id' => $request->category_id,
-      // 'owner_id',
-      // 'brand_id',
+      'owner_id' => $request->owner_id,
+      'brand_id' => $request->brand_id,
       'name' => $request->name,
-      'brand_name' => $request->brand_name,
       'reg_no' => $request->registration_no,
       'color' => $request->color,
       'model' => $request->model,
-      'owner_name' => $request->owner_name,
-      'owner_contact_no' => $request->owner_contact_no,
-      'owner_email' => $request->owner_email ?? null,
+      // 'owner_name' => $request->owner_name,
+      // 'owner_contact_no' => $request->owner_contact_no,
+      // 'owner_email' => $request->owner_email ?? null,
 
       // 'description' => $,
       'full_day_rate_with_fuel' => $request->full_day_rate_with_fuel,
@@ -78,6 +82,7 @@ class CarController extends Controller
       'latitude' => $request->latitude,
       'sale_price' => $request->sale_price,
       'discounted_sale_price' => $request->discounted_sale_price,
+      'available_for_sale' => $request->available_for_sale,
 
     ];
 
@@ -130,7 +135,9 @@ class CarController extends Controller
     $car = Car::find(decryptParams($id));
     $data = [
       'car' => $car,
-      'categories' => CarCategory::all(),
+      'categories' => CarCategory::get(),
+      'brands' => CarBrand::get(),
+      'users' => User::get(),
     ];
     return view('app.cars.edit', $data);
   }
@@ -151,16 +158,13 @@ class CarController extends Controller
     $inputs = $request->all();
     $data = [
       'category_id' => $request->category_id,
-      // 'owner_id',
-      // 'brand_id',
+      'owner_id' => $request->owner_id,
+      'brand_id' => $request->brand_id,
       'name' => $request->name,
-      'brand_name' => $request->brand_name,
       'reg_no' => $request->registration_no,
       'color' => $request->color,
       'model' => $request->model,
-      'owner_name' => $request->owner_name,
-      'owner_contact_no' => $request->owner_contact_no,
-      'owner_email' => $request->owner_email ?? null,
+
       // 'description' => $,
       'full_day_rate_with_fuel' => $request->full_day_rate_with_fuel,
       'full_day_rate_without_fuel' => $request->full_day_rate_without_fuel,
@@ -172,6 +176,7 @@ class CarController extends Controller
       'latitude' => $request->latitude,
       'sale_price' => $request->sale_price,
       'discounted_sale_price' => $request->discounted_sale_price,
+      'available_for_sale' => $request->available_for_sale,
 
     ];
 

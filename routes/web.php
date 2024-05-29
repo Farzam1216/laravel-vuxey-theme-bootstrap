@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CarBookingController;
+use App\Http\Controllers\CarBrandController;
 use App\Http\Controllers\CarCategoryController;
 use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\Route;
@@ -303,6 +305,22 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
     Route::post('/ajax-menu/{id}', [CarCategoryController::class, 'menu'])->name('ajax-menu');
   });
 
+
+  // car category routes
+  Route::group(['prefix' => 'car-brands', 'as' => 'car-brands.'], function () {
+    Route::get('/', [CarBrandController::class, 'index'])->name('index');
+
+    Route::get('create', [CarBrandController::class, 'create'])->name('create');
+    Route::post('store', [CarBrandController::class, 'store'])->name('store');
+
+
+    Route::group(['prefix' => '/{id}'], function () {
+      Route::get('edit', [CarBrandController::class, 'edit'])->name('edit');
+      Route::put('update', [CarBrandController::class, 'update'])->name('update');
+      Route::put('destroy', [CarBrandController::class, 'destroy'])->name('destroy');
+    });
+    Route::post('/ajax-menu/{id}', [CarBrandController::class, 'menu'])->name('ajax-menu');
+  });
   // car category routes
   Route::group(['prefix' => 'cars', 'as' => 'cars.'], function () {
     Route::get('/', [CarController::class, 'index'])->name('index');
@@ -317,6 +335,11 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
       Route::put('destroy', [CarController::class, 'destroy'])->name('destroy');
     });
     Route::post('/ajax-menu/{id}', [CarController::class, 'menu'])->name('ajax-menu');
+  });
+
+  // car category routes
+  Route::group(['prefix' => 'car-bookings', 'as' => 'car-bookings.'], function () {
+    Route::get('/', [CarBookingController::class, 'details'])->name('details');
   });
 });
 
@@ -341,6 +364,7 @@ Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->nam
 
 Route::group(['middleware' => ['auth']], function () {
   Route::get('/car-booking/{id}', [App\Http\Controllers\CarBookingController::class, 'index'])->name('car-booking');
+  Route::post('/store-car-booking', [App\Http\Controllers\CarBookingController::class, 'store'])->name('store-car-booking');
   Route::get('/car-location/{id}', [App\Http\Controllers\CarController::class, 'location'])->name('car-location');
 });
 

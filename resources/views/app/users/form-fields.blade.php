@@ -3,9 +3,9 @@
         <div class="row mb-1 align-items-end">
             <div class="col-lg-4 col-md-4 position-relative">
                 <label class="form-label fs-6" for="name">Full Name <span class="text-danger">*</span></label>
-                <input type="text" required class="form-control form-control-md fs-6 @error('name') is-invalid @enderror"
-                    id="name" name="name" placeholder="Full Name"
-                    value="{{ isset($user) ? $user->name : old('name') }}" />
+                <input type="text" required
+                    class="form-control form-control-md fs-6 @error('name') is-invalid @enderror" id="name"
+                    name="name" placeholder="Full Name" value="{{ isset($user) ? $user->name : old('name') }}" />
                 <small class="text-muted">Enter Full Name</small>
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -13,8 +13,9 @@
             </div>
             <div class="col-lg-4 col-md-4 position-relative  mt-1">
                 <label class="form-label fs-6" for="type_name">Email <span class="text-danger">*</span></label>
-                <input type="email" required class="form-control form-control-md fs-6 @error('email') is-invalid @enderror"
-                    id="email" name="email" placeholder="Email" autocomplete="false"
+                <input type="email" required
+                    class="form-control form-control-md fs-6 @error('email') is-invalid @enderror" id="email"
+                    name="email" placeholder="Email" autocomplete="false"
                     value="{{ isset($user) ? $user->email : old('email') }}" />
                 <small class="text-muted">Enter Email</small></br>
                 @error('email')
@@ -22,40 +23,37 @@
                 @enderror
             </div>
 
-            @can('sites.users.edit.password')
-                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mt-1">
-                    <label class="form-label fs-6" for="type_name">Password <span class="text-danger">*</span></label>
-
-                    <input id="password" type="password"
-                        class="form-control fs-6 form-control-md @error('password') is-invalid @enderror" name="password"
-                        id="password" placeholder="Password" autocomplete="false">
-                    <small class="text-muted">Enter Password</small></br>
-
-                    @error('password')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mt-1">
-                    <label for="password-confirm" class="form-label fs-6">Confirm Password <span
-                            class="text-danger">*</span></label>
-                    <input id="password-confirm" class="form-control form-control-md fs-6" type="password"
-                        class="form-control" placeholder="Confirm Password" name="password_confirmation">
-                    <small class="text-muted">Re-Enter Password</small>
-                </div>
-            @endcan
-
             <div class="col-lg-4 col-md-4 col-sm-4 mt-1">
                 <label class="form-label fs-6" for="contact">Mobile Contact</label>
-                <input type="tel"
-                value="{{ isset($user) ? $user->mobile_no : old('mobile_no') }}"
+                <input type="tel" value="{{ isset($user) ? $user->mobile_no : old('mobile_no') }}"
                     class="form-control form-control-md ContactNoError @error('mobile_no') is-invalid @enderror"
                     id="mobile_no" name="mobile_no" placeholder="" />
                 <small class="text-muted">Enter Mobile Number</small>
                 @error('mobile_no')
+                    <div class="invalid-feedback ">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 mt-1">
+                <label class="form-label fs-6" for="contact">Discount On Number Of Bookings Per Month</label>
+                <input type="number" min="1" required
+                    value="{{ isset($user) ? $user->dicount_on_number_of_bookings_per_month : old('dicount_on_number_of_bookings_per_month') }}"
+                    class="form-control form-control-md ContactNoError @error('dicount_on_number_of_bookings_per_month') is-invalid @enderror"
+                    id="dicount_on_number_of_bookings_per_month" name="dicount_on_number_of_bookings_per_month"
+                    placeholder="" />
+                <small class="text-muted">Enter Discount On Number Of Bookings Per Month</small>
+                @error('dicount_on_number_of_bookings_per_month')
+                    <div class="invalid-feedback ">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 mt-1">
+                <label class="form-label fs-6" for="contact">Discount Percentage</label>
+                <input type="number" min="1" required value="{{ isset($user) ? $user->disount_percentage : old('disount_percentage') }}"
+                    class="form-control form-control-md ContactNoError @error('disount_percentage') is-invalid @enderror"
+                    id="disount_percentage" name="disount_percentage" placeholder="" />
+                <small class="text-muted">Enter Discount Percentage</small>
+                @error('disount_percentage')
                     <div class="invalid-feedback ">{{ $message }}</div>
                 @enderror
             </div>

@@ -4,17 +4,54 @@
             <div class="row mb-1">
 
                 <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
+                    <label class="form-label fs-6" for="name">Select Car Owner<span
+                            class="text-danger">*</span></label>
+                    <select required class="select2-size-lg roles form-select" id="roles" name="owner_id">
+
+                        <option value="">Select Car Owner</option>
+                        @forelse ($users as $user)
+                            <option value="{{ $user->id }}" {{ (isset($car) ? $car->owner_id : old('type')) == $user['id'] ? 'selected' : '' }}>
+                                {{ $loop->index + 1 }} - {{ $user['name'] }}</option>
+                        @empty
+                            No Users Available
+                        @endforelse
+                    </select>
+                    @error('name')
+                        <div class="invalid-tooltip">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
                     <label class="form-label fs-6" for="name">Select Car Category<span
                             class="text-danger">*</span></label>
-                    <select class="select2-size-lg roles form-select" id="roles" name="category_id">
+                    <select required class="select2-size-lg roles form-select" id="roles" name="category_id">
 
-                        <option value="0" selected>Select Car Category</option>
+                        <option value="">Select Car Category</option>
                         @forelse ($categories as $roleRow)
                             <option value="{{ $roleRow['id'] }}"
-                                {{ (isset($role) ? $role->category_id : old('type')) == $roleRow['id'] ? 'selected' : '' }}>
+                                {{ (isset($car) ? $car->category_id : old('type')) == $roleRow['id'] ? 'selected' : '' }}>
                                 {{ $loop->index + 1 }} - {{ $roleRow['name'] }}</option>
                         @empty
                             No Category Available
+                        @endforelse
+                    </select>
+                    @error('name')
+                        <div class="invalid-tooltip">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
+                    <label class="form-label fs-6" for="name">Select Car Brand<span
+                            class="text-danger">*</span></label>
+                    <select required class="select2-size-lg roles form-select" id="roles" name="brand_id">
+
+                        <option value="">Select Car Brand</option>
+                        @forelse ($brands as $brand)
+                            <option value="{{ $brand['id'] }}"
+                                {{ (isset($car) ? $car->brand_id : old('type')) == $brand['id'] ? 'selected' : '' }}>
+                                {{ $loop->index + 1 }} - {{ $brand['name'] }}</option>
+                        @empty
+                            No brand Available
                         @endforelse
                     </select>
                     @error('name')
@@ -32,7 +69,7 @@
                     @enderror
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
+                {{-- <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
                     <label class="form-label fs-6" for="name">Brand Name<span class="text-danger">*</span></label>
                     <input type="text" class="form-control form-control-md @error('brand_name') is-invalid @enderror"
                         id="brand_name" name="brand_name" placeholder="Brand Name" required
@@ -40,7 +77,7 @@
                     @error('brand_name')
                         <div class="invalid-tooltip">{{ $message }}</div>
                     @enderror
-                </div>
+                </div> --}}
 
                 <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
                     <label class="form-label fs-6" for="name">Registraion Number<span
@@ -70,39 +107,6 @@
                         id="model" name="model" placeholder="Model" required
                         value="{{ isset($car) ? $car->model : null }}" />
                     @error('model')
-                        <div class="invalid-tooltip">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
-                    <label class="form-label fs-6" for="name">Owner Name<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control form-control-md @error('owner_name') is-invalid @enderror"
-                        id="owner_name" name="owner_name" placeholder="Owner Name" required
-                        value="{{ isset($car) ? $car->owner_name : null }}" />
-                    @error('owner_name')
-                        <div class="invalid-tooltip">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
-                    <label class="form-label fs-6" for="name">Owner Contact Number<span
-                            class="text-danger">*</span></label>
-                    <input type="text"
-                        class="form-control form-control-md @error('owner_contact_no') is-invalid @enderror"
-                        id="owner_contact_no" name="owner_contact_no" placeholder="Owner Contact Number" required
-                        value="{{ isset($car) ? $car->owner_contact_no : null }}" />
-                    @error('owner_contact_no')
-                        <div class="invalid-tooltip">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
-                    <label class="form-label fs-6" for="name">Owner Email<span class="text-danger">*</span></label>
-                    <input type="email"
-                        class="form-control form-control-md @error('owner_email') is-invalid @enderror" id="owner_email"
-                        name="owner_email" placeholder="Owner Email" required
-                        value="{{ isset($car) ? $car->owner_email : null }}" />
-                    @error('owner_email')
                         <div class="invalid-tooltip">{{ $message }}</div>
                     @enderror
                 </div>
@@ -159,17 +163,31 @@
                 </div>
 
                 <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
+                  <label class="form-label fs-6" for="name">Select Avaialbe For Sale<span
+                          class="text-danger">*</span></label>
+                  <select class="select2-size-lg roles form-select" id="roles" name="available_for_sale">
+                      <option @if (isset($car) && $car->available_for_sale == 'yes') selected @endif value="yes" >Yes Avaialbe
+                          For Sale</option>
+                      <option @if (isset($car) && $car->available_for_sale == 'no') selected @endif value="no" >Not Avaialbe
+                          For Sale</option>
+
+                  </select>
+                  @error('name')
+                      <div class="invalid-tooltip">{{ $message }}</div>
+                  @enderror
+              </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 position-relative mb-2">
                     <label class="form-label fs-6" for="name">Latitude<span class="text-danger">*</span></label>
-                    <input type="text"
-                        class="form-control form-control-md @error('latitude') is-invalid @enderror" id="latitude"
-                        name="latitude" placeholder="Latitude" required
+                    <input type="text" class="form-control form-control-md @error('latitude') is-invalid @enderror"
+                        id="latitude" name="latitude" placeholder="Latitude" required
                         value="{{ isset($car) ? $car->latitude : null }}" />
                     @error('latitude')
                         <div class="invalid-tooltip">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-4 position-relative mb-2">
+                <div class="col-lg-6 col-md-6 col-sm-6 position-relative mb-2">
                     <label class="form-label fs-6" for="name">Longitude<span class="text-danger">*</span></label>
                     <input type="text"
                         class="form-control form-control-md @error('longitude') is-invalid @enderror" id="longitude"
@@ -179,6 +197,8 @@
                         <div class="invalid-tooltip">{{ $message }}</div>
                     @enderror
                 </div>
+
+
 
                 <div class="col-lg-6 col-md-6 col-sm-6 position-relative mb-2">
                     <label class="form-label fs-6" for="name">Sale Price<span

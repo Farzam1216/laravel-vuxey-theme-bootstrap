@@ -2,7 +2,8 @@
 
 namespace App\DataTables;
 
-use App\Models\Car;
+use App\Models\CarBooking;
+use App\Models\CarBrand;
 use App\Models\CarCategory;
 use App\Services\User\Interface\UserInterface;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -15,8 +16,9 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class CarDatatable extends DataTable
+class CarBookingTable extends DataTable
 {
+
   /**
    * Build DataTable class.
    *
@@ -28,35 +30,17 @@ class CarDatatable extends DataTable
     $columns = array_column($this->getColumns(), 'data');
     $editColumns = (new EloquentDataTable($query))
       ->addIndexColumn()
-      ->editColumn('category_id', function ($user) {
-        return $user->category->name ?? '-';
+      ->editColumn('mobile_no', function ($user) {
+        return $user->user->mobile_no ?? '-';
       })
-
-      ->editColumn('owner_id', function ($user) {
-        return $user->owner->name ?? '-';
+      ->editColumn('user_id', function ($user) {
+        return $user->user->name ?? '-';
       })
-
-      ->editColumn('brand_id', function ($user) {
-        return $user->brand->name ?? '-';
+      ->editColumn('car_id', function ($user) {
+        return $user->car->name ?? '-';
       })
-
-      ->editColumn('name', function ($user) {
-
-        // if(isset($user->getMedia('photo_attachment')[0]))
-        // {
-        //   // return $user->getMedia('photo_attachment')[0]->getUrl();
-        //   return '<div class="d-flex justify-content-start align-items-center product-name"><div class="avatar-wrapper"><div class="avatar avatar me-2 rounded-2 bg-label-secondary"><img src="'.$user->getMedia('photo_attachment')[0]->getUrl().'" alt="Product-9" class="rounded-2"></div></div><div class="d-flex flex-column"><h6 class="text-body text-nowrap mb-0">'.$user->name.'</h6></div></div>';
-
-        // }else{
-
-        // $avatar ='https://ui-avatars.com/api/?background=eae8fd&color=7367f0&name=' . $user->name;
-        // return '<div class="d-flex justify-content-start align-items-center product-name"><div class="avatar-wrapper"><div class="avatar avatar me-2 rounded-2 bg-label-secondary"><img src="'.$avatar.'" alt="Product-9" class="rounded-2"></div></div><div class="d-flex flex-column"><h6 class="text-body text-nowrap mb-0">'.$user->name.'</h6></div></div>';
-
-        // }
-
-        // return '<div class="d-flex justify-content-start align-items-center product-name"><div class="avatar-wrapper"><div class="avatar avatar me-2 rounded-2 bg-label-secondary"><img src="https://demos.pixinvent.com/vuexy-html-laravel-admin-template/demo/assets/img/ecommerce-images/product-9.png" alt="Product-9" class="rounded-2"></div></div><div class="d-flex flex-column"><h6 class="text-body text-nowrap mb-0">'.$user->name.'</h6><small class="text-muted text-truncate d-none d-sm-block">Air Jordan is a line of basketball shoes produced by Nike</small></div></div>';
-        // <img src="https://demos.pixinvent.com/vuexy-html-laravel-admin-template/demo/assets/img/ecommerce-images/product-9.png" alt="Product-9" class="rounded-2">
-        return $user->name ?? '-';
+      ->editColumn('email', function ($user) {
+        return $user->user->email ?? '-';
       })
       ->editColumn('residential_city_id', function ($user) {
         return $user->residentialCity->name ?? '-';
@@ -104,7 +88,9 @@ class CarDatatable extends DataTable
         return $user;
       })
       ->setRowId('id')
-      ->rawColumns(array_merge($columns, ['action', 'check', 'name']));
+      ->rawColumns(array_merge($columns, ['action', 'check']));
+
+
 
     return $editColumns;
   }
@@ -112,9 +98,9 @@ class CarDatatable extends DataTable
   /**
    * Get query source of dataTable.
    */
-  public function query(Car $model): QueryBuilder
+  public function query(CarBooking $model): QueryBuilder
   {
-    return $model->newQuery()->with('brand','owner','category')->orderBy('updated_at', 'desc');
+    return $model->newQuery()->orderBy('updated_at', 'desc');
   }
 
   public function html(): HtmlBuilder
@@ -142,28 +128,28 @@ class CarDatatable extends DataTable
             ]),
         ]),
 
-        Button::make('collection')->text('<i class="ti ti-dots-vertical"></i>')->addClass('ms-1 btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow waves-effect waves-light custom_more')->buttons([
-          Button::raw('delete-selected')->addClass('dropdown-item mt-1')->addClass($this->createPermission ? '' : ' d-none')
-            ->text('<svg style="margin-right: 13px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <g clip-path="url(#clip0_66_53)">
-                  <path d="M19 5.79999C16.8 1.09999 11.4 -1.20001 6.60005 0.69999C2.70005 2.09999 0.500049 4.99999 0.100049 9.09999C-0.0999512 11.2 0.300049 13.3 1.50005 15.1C1.60005 15.3 1.60005 15.4 1.50005 15.6C1.00005 16.7 0.600049 17.7 0.200049 18.8C4.88311e-05 19.1 4.88311e-05 19.4 0.200049 19.7C0.400049 20 0.700049 20 1.10005 19.9C2.50005 19.6 3.90005 19.3 5.30005 18.9C5.50005 18.9 5.60005 18.9 5.80005 18.9C7.10005 19.5 8.60005 19.9 10.4 19.9C11.1 19.9 12.1 19.8 13 19.5C18.7 17.7 21.6 11.3 19 5.79999ZM11.7 18.6C9.70005 19 7.80005 18.7 6.00005 17.8C5.60005 17.6 5.30005 17.6 4.90005 17.7C3.90005 18 2.90005 18.2 1.80005 18.4H1.70005C2.00005 17.6 2.30005 16.8 2.70005 16.1C2.90005 15.6 2.90005 15.3 2.60005 14.8C1.50005 13.2 1.10005 11.5 1.20005 9.59999C1.30005 5.79999 4.00005 2.49999 7.80005 1.49999C12.6 0.19999 17.6 3.29999 18.6 8.19999C19.6 13 16.5 17.7 11.7 18.6Z" fill="#6B6371"/>
-                  <path d="M10.8 7.9C10.8 8.3 10.8 8.7 10.8 9C10.8 9.2 10.8 9.2 11 9.2C11.7 9.2 12.5 9.2 13.2 9.2C13.7 9.2 14 9.5 14 10C14 10.5 13.6 10.8 13.1 10.8C12.4 10.8 11.7 10.8 10.9 10.8C10.7 10.8 10.7 10.8 10.7 11C10.7 11.7 10.7 12.4 10.7 13.1C10.7 13.7 10.4 14 9.9 14C9.4 14 9.1 13.6 9.1 13.1C9.1 12.4 9.1 11.7 9.1 11C9.1 10.8 9.1 10.8 8.9 10.8C8.2 10.8 7.5 10.8 6.8 10.8C6.3 10.8 6 10.5 6 10C6 9.5 6.3 9.2 6.9 9.2C7.6 9.2 8.3 9.2 9 9.2C9.2 9.2 9.2 9.2 9.2 9C9.2 8.3 9.2 7.6 9.2 6.8C9.2 6.3 9.5 6 10 6C10.5 6 10.8 6.4 10.8 6.9C10.8 7.2 10.8 7.5 10.8 7.9Z" fill="#6B6371"/>
-                  </g>
-                  <defs>
-                  <clipPath id="clip0_66_53">
-                  <rect width="20" height="20" fill="white"/>
-                  </clipPath>
-                  </defs>
-                  </svg> Add New')->attr([
-              'onclick' => 'addNew()',
-            ]),
-          // Button::raw('delete-selected')->addClass('dropdown-item mt-1')->addClass($this->selectedDeletePermission ? '' : ' d-none')
-          //   ->text('<svg xmlns="http://www.w3.org/2000/svg" width="20" style="margin-right: 15px" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-          //             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-          //         </svg> Suspend Selected')->attr([
-          //     'onclick' => 'deleteSelected()',
-          //   ]),
-        ]),
+        // Button::make('collection')->text('<i class="ti ti-dots-vertical"></i>')->addClass('ms-1 btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow waves-effect waves-light custom_more')->buttons([
+        //   Button::raw('delete-selected')->addClass('dropdown-item mt-1')->addClass($this->createPermission ? '' : ' d-none')
+        //     ->text('<svg style="margin-right: 13px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        //           <g clip-path="url(#clip0_66_53)">
+        //           <path d="M19 5.79999C16.8 1.09999 11.4 -1.20001 6.60005 0.69999C2.70005 2.09999 0.500049 4.99999 0.100049 9.09999C-0.0999512 11.2 0.300049 13.3 1.50005 15.1C1.60005 15.3 1.60005 15.4 1.50005 15.6C1.00005 16.7 0.600049 17.7 0.200049 18.8C4.88311e-05 19.1 4.88311e-05 19.4 0.200049 19.7C0.400049 20 0.700049 20 1.10005 19.9C2.50005 19.6 3.90005 19.3 5.30005 18.9C5.50005 18.9 5.60005 18.9 5.80005 18.9C7.10005 19.5 8.60005 19.9 10.4 19.9C11.1 19.9 12.1 19.8 13 19.5C18.7 17.7 21.6 11.3 19 5.79999ZM11.7 18.6C9.70005 19 7.80005 18.7 6.00005 17.8C5.60005 17.6 5.30005 17.6 4.90005 17.7C3.90005 18 2.90005 18.2 1.80005 18.4H1.70005C2.00005 17.6 2.30005 16.8 2.70005 16.1C2.90005 15.6 2.90005 15.3 2.60005 14.8C1.50005 13.2 1.10005 11.5 1.20005 9.59999C1.30005 5.79999 4.00005 2.49999 7.80005 1.49999C12.6 0.19999 17.6 3.29999 18.6 8.19999C19.6 13 16.5 17.7 11.7 18.6Z" fill="#6B6371"/>
+        //           <path d="M10.8 7.9C10.8 8.3 10.8 8.7 10.8 9C10.8 9.2 10.8 9.2 11 9.2C11.7 9.2 12.5 9.2 13.2 9.2C13.7 9.2 14 9.5 14 10C14 10.5 13.6 10.8 13.1 10.8C12.4 10.8 11.7 10.8 10.9 10.8C10.7 10.8 10.7 10.8 10.7 11C10.7 11.7 10.7 12.4 10.7 13.1C10.7 13.7 10.4 14 9.9 14C9.4 14 9.1 13.6 9.1 13.1C9.1 12.4 9.1 11.7 9.1 11C9.1 10.8 9.1 10.8 8.9 10.8C8.2 10.8 7.5 10.8 6.8 10.8C6.3 10.8 6 10.5 6 10C6 9.5 6.3 9.2 6.9 9.2C7.6 9.2 8.3 9.2 9 9.2C9.2 9.2 9.2 9.2 9.2 9C9.2 8.3 9.2 7.6 9.2 6.8C9.2 6.3 9.5 6 10 6C10.5 6 10.8 6.4 10.8 6.9C10.8 7.2 10.8 7.5 10.8 7.9Z" fill="#6B6371"/>
+        //           </g>
+        //           <defs>
+        //           <clipPath id="clip0_66_53">
+        //           <rect width="20" height="20" fill="white"/>
+        //           </clipPath>
+        //           </defs>
+        //           </svg> Add New')->attr([
+        //       'onclick' => 'addNew()',
+        //     ]),
+        //   // Button::raw('delete-selected')->addClass('dropdown-item mt-1')->addClass($this->selectedDeletePermission ? '' : ' d-none')
+        //   //   ->text('<svg xmlns="http://www.w3.org/2000/svg" width="20" style="margin-right: 15px" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+        //   //             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+        //   //         </svg> Suspend Selected')->attr([
+        //   //     'onclick' => 'deleteSelected()',
+        //   //   ]),
+        // ]),
 
       );
     // ->columnDefs([
@@ -194,33 +180,35 @@ class CarDatatable extends DataTable
    */
   protected function getColumns(): array
   {
-    $editPermission = Auth::user()->hasPermissionTo('cars.edit');
+    $editPermission = Auth::user()->hasPermissionTo('car-categories.edit');
     $columns = [
-      Column::make('name')->title('Name')->addClass('text-nowrap'),
-      Column::make('owner_id')->title('Owner Name')->addClass('text-nowrap'),
-      Column::make('category_id')->title('Category Name')->addClass('text-nowrap'),
-      Column::make('brand_id')->title('Brand Name')->addClass('text-nowrap'),
-      Column::make('reg_no')->title('Registration No.')->addClass('text-nowrap'),
-      Column::make('color')->title('Color')->addClass('text-nowrap'),
-      Column::make('model')->title('Model')->addClass('text-nowrap'),
-      Column::make('full_day_rate_with_fuel')->title('Full Day Rate With Fuel')->addClass('text-nowrap'),
-      Column::make('full_day_rate_without_fuel')->title('Full Day Rate Without Fuel')->addClass('text-nowrap'),
-      Column::make('per_km_rate_with_fuel')->title('Per Km With Fuel')->addClass('text-nowrap'),
-      Column::make('per_km_rate_without_fuel')->title('Per Km Without Fuel')->addClass('text-nowrap'),
-      Column::make('longitude')->title('longitude')->addClass('text-nowrap'),
-      Column::make('latitude')->title('latitude')->addClass('text-nowrap'),
-      Column::make('sale_price')->title('Sale Price')->addClass('text-nowrap'),
-      Column::make('discounted_sale_price')->title('Discounted Sale Price')->addClass('text-nowrap'),
+      // ($selectedDeletePermission ?
+      //   Column::computed('check')->exportable(false)->printable(false)->width(60)
+      //   :
+      //   Column::computed('check')->exportable(false)->printable(false)->width(60)->addClass('hidden')
+      // ),
+      Column::make('user_id')->title('Customer Name')->addClass('text-nowrap'),
+      Column::computed('email')->title('Customer Email')->addClass('text-nowrap'),
+      Column::computed('mobile_no')->title('Customer Mobile Number')->addClass('text-nowrap'),
+
+      Column::make('car_id')->title('Car Name')->addClass('text-nowrap'),
+      Column::make('pick_up_location')->title('Pick Up Location')->addClass('text-nowrap'),
+      Column::make('drop_off_location')->title('Drop Off Location')->addClass('text-nowrap'),
+      Column::make('pick_up_date')->title('Pick Up Date')->addClass('text-nowrap'),
+      Column::make('drop_off_date')->title('Drop Of Date')->addClass('text-nowrap'),
+      Column::make('rate')->title('Rate')->addClass('text-nowrap'),
+      Column::make('discount_rate')->title('Discount Rate')->addClass('text-nowrap'),
+
     ];
 
     $columns[] = Column::make('created_at')->addClass('text-nowrap');
     $columns[] = Column::make('updated_at')->addClass('text-nowrap');
 
-    if ($editPermission) {
-      $columns[] = Column::computed('actions')->exportable(false)->printable(false)->width(60);
-    } else {
-      $columns[] = Column::computed('actions')->exportable(false)->printable(false)->width(60)->addClass('hidden');
-    }
+    // if ($editPermission) {
+    //   $columns[] = Column::computed('actions')->exportable(false)->printable(false)->width(60);
+    // } else {
+    //   $columns[] = Column::computed('actions')->exportable(false)->printable(false)->width(60)->addClass('hidden');
+    // }
 
     return $columns;
   }

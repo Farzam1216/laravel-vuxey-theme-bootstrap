@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
       PermissionTableSeeder::class,
       UsersSeeder::class,
       CarCategorySeeder::class,
+      CarBrandSeeder::class,
       CarSeeder::class,
 
     ]);

@@ -27,6 +27,8 @@ class User extends Authenticatable
     'user_name',
     'mobile_no',
     'password',
+    'dicount_on_number_of_bookings_per_month',
+    'disount_percentage',
   ];
 
 
@@ -57,12 +59,12 @@ class User extends Authenticatable
   public function registerMediaConversions(Media $media = null): void
   {
 
-      $this->addMediaConversion('thumb')
-          ->performOnCollections('photo_attachment')
-          ->width(1000)
-          ->height(664)
-          ->keepOriginalImageFormat()
-          ->nonQueued()
-          ->sharpen(10);
+    $this->addMediaConversion('thumb')
+      ->performOnCollections('photo_attachment')
+      ->width(1000)
+      ->height(664)
+      ->keepOriginalImageFormat()
+      ->nonQueued()
+      ->sharpen(10);
   }
 }

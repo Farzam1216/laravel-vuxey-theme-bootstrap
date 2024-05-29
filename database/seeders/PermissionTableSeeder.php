@@ -188,6 +188,37 @@ class PermissionTableSeeder extends Seeder
         'title' => 'Car Categories',
       ],
 
+      // car brands
+      [
+        'name' => 'car-brands.index',
+        'show_name' => 'Can View Car Brands',
+        'guard_name' => 'web',
+        'title' => 'Car Brands',
+      ],
+      [
+        'name' => 'car-brands.create',
+        'show_name' => 'Can Create Car Brands',
+        'guard_name' => 'web',
+        'title' => 'Car Brands',
+      ],
+      [
+        'name' => 'car-brands.store',
+        'show_name' => 'Can Store Car Brands',
+        'guard_name' => 'web',
+        'title' => 'Car Brands',
+      ],
+      [
+        'name' => 'car-brands.edit',
+        'show_name' => 'Can Edit Car Brands',
+        'guard_name' => 'web',
+        'title' => 'Car Brands',
+      ],
+      [
+        'name' => 'car-brands.update',
+        'show_name' => 'Can Update Car Brands',
+        'guard_name' => 'web',
+        'title' => 'Car Brands',
+      ],
       // cars
       [
         'name' => 'cars.index',
@@ -219,9 +250,12 @@ class PermissionTableSeeder extends Seeder
         'guard_name' => 'web',
         'title' => 'Car Details',
       ],
-
-
-
+      [
+        'name' => 'car-bookings.details',
+        'show_name' => 'Can View Car Booking Details',
+        'guard_name' => 'web',
+        'title' => 'Car Booking Details',
+      ],
     ];
 
     foreach ($data as $permission) {

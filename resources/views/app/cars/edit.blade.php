@@ -81,6 +81,8 @@
                 {{ view('app.cars.form-fields', [
                     'categories' => $categories,
                     'car' => $car,
+                    'brands' => $brands,
+                    'users' => $users,
                 ]) }}
 
             </div>

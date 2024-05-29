@@ -34,10 +34,21 @@ class Car extends Model implements HasMedia
     'latitude',
     'sale_price',
     'discounted_sale_price',
+    'available_for_sale',
   ];
+
+  public function owner()
+  {
+    return $this->belongsTo(User::class, 'owner_id');
+  }
 
   public function category()
   {
     return $this->belongsTo(CarCategory::class, 'category_id');
+  }
+
+  public function brand()
+  {
+    return $this->belongsTo(CarBrand::class, 'brand_id');
   }
 }

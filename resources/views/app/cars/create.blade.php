@@ -45,6 +45,8 @@
                 @csrf
                 {{ view('app.cars.form-fields', [
                     'categories' => $categories,
+                    'brands' => $brands,
+                    'users' => $users,
                 ]) }}
 
             </div>

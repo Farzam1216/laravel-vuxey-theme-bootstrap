@@ -217,7 +217,8 @@
                                 <div class="text">
                                     <h2 class="mb-0"><a href="#">{{ ucfirst($car->name) }}</a></h2>
                                     <div class="d-flex mb-3">
-                                        <span class="cat">{{ $car->category->name ?? '-' }}</span>
+                                        <span class="cat">{{ $car->category->name ?? '-' }} - {{ $car->brand->name ?? '-'  }}</span>
+
                                         <p class="price ml-auto">${{ numberFormat($car->full_day_rate_with_fuel) }}
                                             <span>/day</span>
                                         </p>

@@ -369,6 +369,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/store-car-booking', [App\Http\Controllers\CarBookingController::class, 'store'])->name('store-car-booking');
   Route::get('/car-location/{id}', [App\Http\Controllers\CarController::class, 'location'])->name('car-location');
   Route::get('/user-bookings', [App\Http\Controllers\CarBookingController::class, 'USerBookings'])->name('user-bookings');
+  Route::post('/store-car-review', [App\Http\Controllers\CarReviewsController::class, 'store'])->name('store-car-review');
 });
 
 Route::get('/logout-user', [App\Http\Controllers\UserController::class, 'logout'])->name('logout-user');

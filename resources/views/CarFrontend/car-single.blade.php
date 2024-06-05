@@ -22,17 +22,18 @@
 
         <link rel="stylesheet" href="{{ asset('car-theme/css/bootstrap-datepicker.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/jquery.timepicker.css') }}">
-
         <link rel="stylesheet" href="{{ asset('car-theme/css/flaticon.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/icomoon.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/style.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     </head>
 
     <body>
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="#"><span>{{ config('app.name', 'Laravel') }}</span></a>
+                <a class="navbar-brand"
+                    href="{{ route('frontend') }}"><span>{{ config('app.name', 'Laravel') }}</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                     aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
@@ -48,6 +49,10 @@
                                 <li class="nav-item "><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
                                 </li>
                             @endcan
+
+                            <li class="nav-item "><a href="{{ route('user-bookings') }}" class="nav-link">Booking
+                                    Details</a>
+                            </li>
                             <li class="nav-item "><a href="{{ route('logout-user') }}" class="nav-link">Logout</a>
                             </li>
 
@@ -95,71 +100,105 @@
                         <h1 class="mb-3 bread">Car Details</h1>
                     </div>
                 </div>
+
             </div>
         </section>
 
         <section class="ftco-section ftco-no-pt bg-light">
             <div class="container">
+
                 <div class="row no-gutters">
-                    <div class="col-md-12	featured-top">
+                    <div class="col-md-12 featured-top">
                         <div class="row no-gutters">
                             <div class="col-md-4 d-flex align-items-center">
                                 <form action="{{ route('store-car-booking') }}" method="post"
                                     class="request-form ftco-animate bg-primary">
                                     @csrf
                                     <h2>Make your trip</h2>
-                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="">
-                                    <input type="hidden" name="car_id" value="{{ $car->id }}" id="">
+                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                    <input type="hidden" name="car_id" value="{{ $car->id }}">
 
                                     <div class="form-group">
                                         <label for="" class="label">User Name</label>
                                         <input type="text" readonly class="form-control"
-                                            value="{{ Auth::user()->name }}" placeholder="City, Airport, Station, etc">
+                                            value="{{ Auth::user()->name }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">User Email</label>
-                                        <input  type="text" readonly class="form-control"
-                                            value="{{ Auth::user()->email }}"
-                                            placeholder="City, Airport, Station, etc">
+                                        <input type="text" readonly class="form-control"
+                                            value="{{ Auth::user()->email }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">User Mobile No.</label>
-                                        <input  type="text" readonly class="form-control"
-                                            value="{{ Auth::user()->mobile_no }}"
-                                            placeholder="City, Airport, Station, etc">
+                                        <input type="text" readonly class="form-control"
+                                            value="{{ Auth::user()->mobile_no }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="label">Select Rent Type</label>
+                                        <select name="rent_type" id="rent_type" class="form-control">
+                                            <option value="per_day">Per Day</option>
+                                            <option value="per_km">Per Km</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="km_group" style="display: none;">
+                                        <label for="" class="label">Enter Kilometer</label>
+                                        <input type="number" name="total_km" id="total_km" class="form-control"
+                                            placeholder="Enter Kilometers">
+                                    </div>
+                                    <div class="form-group" id="days_group" style="display: none;">
+                                        <label for="" class="label">Total Number of Days</label>
+                                        <input type="number" readonly id="total_days" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">Rent Rate</label>
-                                        <input required type="number" name="car_rate" class="form-control"
-                                            value="{{ $car->full_day_rate_with_fuel }}"
-                                            placeholder="City, Airport, Station, etc">
+                                        <input readonly type="number" name="car_rate" id="car_rate"
+                                            class="form-control" value="{{ $car->full_day_rate_with_fuel }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">Pick-up location</label>
-                                        <input required type="text" class="form-control" name="pickup_location"
+                                        <input type="text" class="form-control" name="pickup_location"
                                             placeholder="City, Airport, Station, etc">
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">Drop-off location</label>
-                                        <input required type="text" class="form-control" name="dropoff_location"
+                                        <input type="text" class="form-control" name="dropoff_location"
                                             placeholder="City, Airport, Station, etc">
                                     </div>
                                     <div class="d-flex">
-                                        <div class="form-group mr-2">
+                                        {{-- <div class="form-group mr-2">
                                             <label for="" class="label">Pick-up date</label>
-                                            <input required type="text" class="form-control" id="book_pick_date"
-                                                name="pick_up_date" placeholder="Date">
+                                            <input type="date" class="form-control" id="book_pick_date"
+                                                name="pick_up_date">
                                         </div>
                                         <div class="form-group ml-2">
                                             <label for="" class="label">Drop-off date</label>
-                                            <input required type="text" class="form-control" id="book_off_date"
-                                                name="dropp_of_date" placeholder="Date">
+                                            <input type="date" class="form-control" id="book_off_date"
+                                                name="drop_off_date">
+                                        </div> --}}
+                                        <div class="form-group mr-2">
+                                            <label for="" class="label">Pick-up date</label>
+                                            <input type="text" class="form-control" id="book_pick_date_flatpicker"
+                                                name="pick_up_date">
+                                        </div>
+                                        <div class="form-group ml-2">
+                                            <label for="" class="label">Drop-off date</label>
+                                            <input type="text" class="form-control" id="book_off_date_flatpicker"
+                                                name="drop_off_date">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="" class="label">Pick-up time</label>
-                                        <input required type="text" class="form-control" id="time_pick" name="pickup_time"
-                                            placeholder="Time">
+                                        <input type="time" class="form-control" id="time_pick"
+                                            name="pickup_time">
+                                    </div> --}}
+                                    <div class="form-group" id="discount_group" style="display: none;">
+                                        <label for="" class="label">Discount (%)</label>
+                                        <input type="number" readonly id="discount" class="form-control"
+                                            value="10">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="label">Total Fare</label>
+                                        <input readonly type="number" id="total_fare" name="total_fare" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <input type="submit" value="Rent A Car Now"
@@ -202,13 +241,32 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect
-                                            Car</a></p> --}}
+                                    {{-- <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect Car</a></p> --}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+        </section>
+
+        <section class="ftco-section ftco-no-pt bg-light">
+          <div class="container">
+              @if ($errors->any())
+                  <div class="alert alert-danger">
+                      <ul>
+                          @foreach ($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                          @endforeach
+                      </ul>
+                  </div>
+              @endif
+
+              @if (session('success'))
+                  <div class="alert alert-success">
+                      {{ session('success') }}
+                  </div>
+              @endif
+          </div>
         </section>
 
         @php
@@ -667,6 +725,10 @@
             </div>
         </footer>
 
+        @php
+            $user = Auth::user();
+        @endphp
+
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
                 <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4"
@@ -693,6 +755,88 @@
         <script src="{{ asset('car-theme/js/google-map.js') }}"></script>
         <script src="{{ asset('car-theme/js/main.js') }}"></script>
 
-    </body>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-</html>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Flatpickr
+                flatpickr("#book_pick_date_flatpicker", {
+                    dateFormat: "Y-m-d",
+                    onChange: calculateFare
+                });
+                flatpickr("#book_off_date_flatpicker", {
+                    dateFormat: "Y-m-d",
+                    onChange: calculateFare
+                });
+
+                const rentTypeSelect = document.getElementById('rent_type');
+                const kmGroup = document.getElementById('km_group');
+                const daysGroup = document.getElementById('days_group');
+                const totalKmInput = document.getElementById('total_km');
+                const carRateInput = document.getElementById('car_rate');
+                const totalFareInput = document.getElementById('total_fare');
+                const pickUpDateInput = document.getElementById('book_pick_date_flatpicker');
+                const dropOffDateInput = document.getElementById('book_off_date_flatpicker');
+                const totalDaysInput = document.getElementById('total_days');
+                const discountGroup = document.getElementById('discount_group');
+                const discountInput = document.getElementById('discount');
+
+                const perDayRate = {{ $car->full_day_rate_with_fuel }};
+                const perKmRate = {{ $car->per_km_rate_with_fuel }};
+                const discountPercentage = 10; // Example discount percentage
+
+                const rentalCount = {{ $rentalCount }}; // Dynamically passed from the controller
+                // Assuming this is passed from the controller
+
+                function calculateFare() {
+                    const rentType = rentTypeSelect.value;
+                    let totalFare = 0;
+                    let totalDays = 0;
+                    let discount = 0;
+
+                    const pickUpDate = new Date(pickUpDateInput.value);
+                    const dropOffDate = new Date(dropOffDateInput.value);
+
+                    if (!isNaN(pickUpDate) && !isNaN(dropOffDate) && pickUpDate <= dropOffDate) {
+                        const timeDiff = Math.abs(dropOffDate - pickUpDate);
+                        totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    }
+
+                    if (rentType === 'per_day') {
+                        totalFare = totalDays * perDayRate;
+                        totalDaysInput.value = totalDays;
+                        daysGroup.style.display = 'block';
+                    } else if (rentType === 'per_km') {
+                        const totalKm = parseFloat(totalKmInput.value) || 0;
+                        totalFare = totalKm * perKmRate;
+                        daysGroup.style.display = 'none';
+                    }
+
+                    if (rentalCount > 1) {
+                        discount = (totalFare * discountPercentage) / 100;
+                        discountGroup.style.display = 'block';
+                        discountInput.value = discountPercentage;
+                    } else {
+                        discountGroup.style.display = 'none';
+                    }
+
+                    totalFare = totalFare - discount;
+                    totalFareInput.value = totalFare.toFixed(2);
+                }
+
+                rentTypeSelect.addEventListener('change', function() {
+                    if (this.value === 'per_km') {
+                        kmGroup.style.display = 'block';
+                    } else {
+                        kmGroup.style.display = 'none';
+                    }
+                    calculateFare();
+                });
+
+                totalKmInput.addEventListener('input', calculateFare);
+                pickUpDateInput.addEventListener('input', calculateFare);
+                dropOffDateInput.addEventListener('input', calculateFare);
+
+                calculateFare();
+            });
+        </script>

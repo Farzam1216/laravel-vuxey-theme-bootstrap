@@ -32,7 +32,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="#"><span>{{ config('app.name', 'Laravel') }}</span></a>
+                <a class="navbar-brand" href="{{ route('frontend') }}"><span>{{ config('app.name', 'Laravel') }}</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                     aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
@@ -45,19 +45,22 @@
                             <li class="nav-item active"><a href="#" class="nav-link">{{ Auth::user()->name }}</a>
                             </li>
                             @can('dashboard')
-
-                            <li class="nav-item "><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
-                            </li>
+                                <li class="nav-item "><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
+                                </li>
                             @endcan
-                            <li class="nav-item "><a href="{{ route('logout-user') }}"
-                                    class="nav-link">Logout</a>
+                            <li class="nav-item "><a href="{{ route('user-bookings') }}" class="nav-link">Booking
+                                    Details</a>
+                            </li>
+                            <li class="nav-item "><a href="{{ route('logout-user') }}" class="nav-link">Logout</a>
                             </li>
 
                             <form method="POST" id="logout-form" action="{{ route('logout') }}">
                                 @csrf
                             </form>
                         @else
-                            <li class="nav-item "><a  href="{{ Route::has('register') ? route('register') : 'javascript:void(0)' }}" class="nav-link">Register</a>
+                            <li class="nav-item "><a
+                                    href="{{ Route::has('register') ? route('register') : 'javascript:void(0)' }}"
+                                    class="nav-link">Register</a>
                             </li>
                             <li class="nav-item "><a
                                     href="{{ Route::has('login') ? route('login') : 'javascript:void(0)' }}"
@@ -67,8 +70,6 @@
                             <form method="POST" id="logout-form" action="{{ route('logout') }}">
                                 @csrf
                             </form>
-
-
                         @endif
 
                         {{-- <li class="nav-item active"><a href="#" class="nav-link">Home</a></li> --}}
@@ -217,7 +218,8 @@
                                 <div class="text">
                                     <h2 class="mb-0"><a href="#">{{ ucfirst($car->name) }}</a></h2>
                                     <div class="d-flex mb-3">
-                                        <span class="cat">{{ $car->category->name ?? '-' }} - {{ $car->brand->name ?? '-'  }}</span>
+                                        <span class="cat">{{ $car->category->name ?? '-' }} -
+                                            {{ $car->brand->name ?? '-' }}</span>
 
                                         <p class="price ml-auto">${{ numberFormat($car->full_day_rate_with_fuel) }}
                                             <span>/day</span>

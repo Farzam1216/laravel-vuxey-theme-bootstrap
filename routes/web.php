@@ -366,6 +366,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/car-booking/{id}', [App\Http\Controllers\CarBookingController::class, 'index'])->name('car-booking');
   Route::post('/store-car-booking', [App\Http\Controllers\CarBookingController::class, 'store'])->name('store-car-booking');
   Route::get('/car-location/{id}', [App\Http\Controllers\CarController::class, 'location'])->name('car-location');
+  Route::get('/user-bookings', [App\Http\Controllers\CarBookingController::class, 'USerBookings'])->name('user-bookings');
 });
 
 Route::get('/logout-user', [App\Http\Controllers\UserController::class, 'logout'])->name('logout-user');

@@ -12,24 +12,29 @@ class CarBooking extends Model
   protected $fillable = [
     'car_id',
     'user_id',
-    'pick_up_location',
-    'drop_off_location',
+    'pickup_location',
+    'dropoff_location',
     'pick_up_date',
     'drop_off_date',
     'rate',
     'discount_rate',
     'status',
     'date',
+    'rent_type',
+    'total_km',
+    'pickup_location',
+    'car_rate',
+    'total_fare',
   ];
 
+  // Relationships, if any
+  public function user()
+  {
+    return $this->belongsTo(User::class);
+  }
 
   public function car()
   {
     return $this->belongsTo(Car::class);
-  }
-
-  public function user()
-  {
-    return $this->belongsTo(User::class);
   }
 }

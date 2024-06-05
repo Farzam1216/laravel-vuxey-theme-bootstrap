@@ -53,6 +53,9 @@
                             <li class="nav-item "><a href="{{ route('user-bookings') }}" class="nav-link">Booking
                                     Details</a>
                             </li>
+                            <li class="nav-item "><a href="{{ route('car-for-sale') }}" class="nav-link">Booking
+                                    Cars For Sale</a>
+                            </li>
                             <li class="nav-item "><a href="{{ route('logout-user') }}" class="nav-link">Logout</a>
                             </li>
 
@@ -145,10 +148,7 @@
                                         <input type="number" name="total_km" id="total_km" class="form-control"
                                             placeholder="Enter Kilometers">
                                     </div>
-                                    <div class="form-group" id="days_group" style="display: none;">
-                                        <label for="" class="label">Total Number of Days</label>
-                                        <input type="number" readonly id="total_days" class="form-control">
-                                    </div>
+
                                     <div class="form-group">
                                         <label for="" class="label">Rent Rate</label>
                                         <input readonly type="number" name="car_rate" id="car_rate"
@@ -186,6 +186,10 @@
                                                 name="drop_off_date">
                                         </div>
                                     </div>
+                                    <div class="form-group" id="days_group" style="display: none;">
+                                        <label for="" class="label">Total Number of Days</label>
+                                        <input type="number" readonly id="total_days" class="form-control">
+                                    </div>
                                     {{-- <div class="form-group">
                                         <label for="" class="label">Pick-up time</label>
                                         <input type="time" class="form-control" id="time_pick"
@@ -198,7 +202,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="label">Total Fare</label>
-                                        <input readonly type="number" id="total_fare" name="total_fare" class="form-control">
+                                        <input readonly type="number" id="total_fare" name="total_fare"
+                                            class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <input type="submit" value="Rent A Car Now"
@@ -250,23 +255,23 @@
         </section>
 
         <section class="ftco-section ftco-no-pt bg-light">
-          <div class="container">
-              @if ($errors->any())
-                  <div class="alert alert-danger">
-                      <ul>
-                          @foreach ($errors->all() as $error)
-                              <li>{{ $error }}</li>
-                          @endforeach
-                      </ul>
-                  </div>
-              @endif
+            <div class="container">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-              @if (session('success'))
-                  <div class="alert alert-success">
-                      {{ session('success') }}
-                  </div>
-              @endif
-          </div>
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+            </div>
         </section>
 
         @php
@@ -377,11 +382,11 @@
                             <div class="d-flex justify-content-center">
                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a class="nav-link active" id="pills-description-tab" data-toggle="pill"
                                             href="#pills-description" role="tab"
                                             aria-controls="pills-description" aria-expanded="true">Features</a>
-                                    </li>
+                                    </li> --}}
                                     <li class="nav-item">
                                         <a class="nav-link" id="pills-manufacturer-tab" data-toggle="pill"
                                             href="#pills-manufacturer" role="tab"
@@ -396,7 +401,7 @@
                             </div>
 
                             <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-description" role="tabpanel"
+                                {{-- <div class="tab-pane fade show active" id="pills-description" role="tabpanel"
                                     aria-labelledby="pills-description-tab">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -437,9 +442,9 @@
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="tab-pane fade" id="pills-manufacturer" role="tabpanel"
+                                <div class="tab-pane fade show active" id="pills-manufacturer" role="tabpanel"
                                     aria-labelledby="pills-manufacturer-tab">
                                     <p>Even the all-powerful Pointing has no control about the blind texts it is an
                                         almost unorthographic life One day however a small line of blind text by the
@@ -783,10 +788,11 @@
 
                 const perDayRate = {{ $car->full_day_rate_with_fuel }};
                 const perKmRate = {{ $car->per_km_rate_with_fuel }};
-                const discountPercentage = 10; // Example discount percentage
+                const discountPercentage = {{ $user->disount_percentage }}; // Example discount percentage
 
                 const rentalCount = {{ $rentalCount }}; // Dynamically passed from the controller
                 // Assuming this is passed from the controller
+                const dicount_on_number_of_bookings_per_month = {{ $user->dicount_on_number_of_bookings_per_month }};
 
                 function calculateFare() {
                     const rentType = rentTypeSelect.value;
@@ -812,7 +818,7 @@
                         daysGroup.style.display = 'none';
                     }
 
-                    if (rentalCount > 1) {
+                    if (rentalCount >= dicount_on_number_of_bookings_per_month) {
                         discount = (totalFare * discountPercentage) / 100;
                         discountGroup.style.display = 'block';
                         discountInput.value = discountPercentage;

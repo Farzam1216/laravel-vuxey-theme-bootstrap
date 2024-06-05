@@ -8,21 +8,28 @@
 
         <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
             rel="stylesheet">
+        <!-- {{ asset('assets/img/favicon/favicon.ico') }} -->
         <link rel="stylesheet" href="{{ asset('car-theme/css/open-iconic-bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/animate.css') }}">
+
         <link rel="stylesheet" href="{{ asset('car-theme/css/owl.carousel.min.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/owl.theme.default.min.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/magnific-popup.css') }}">
+
         <link rel="stylesheet" href="{{ asset('car-theme/css/aos.css') }}">
+
         <link rel="stylesheet" href="{{ asset('car-theme/css/ionicons.min.css') }}">
+
         <link rel="stylesheet" href="{{ asset('car-theme/css/bootstrap-datepicker.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/jquery.timepicker.css') }}">
+
         <link rel="stylesheet" href="{{ asset('car-theme/css/flaticon.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/icomoon.css') }}">
         <link rel="stylesheet" href="{{ asset('car-theme/css/style.css') }}">
     </head>
 
     <body>
+
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
                 <a class="navbar-brand"
@@ -34,46 +41,63 @@
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
+
                         @if (Auth::check())
                             <li class="nav-item active"><a href="#" class="nav-link">{{ Auth::user()->name }}</a>
                             </li>
                             @can('dashboard')
-                                <li class="nav-item"><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a></li>
+                                <li class="nav-item "><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
+                                </li>
                             @endcan
-                            <li class="nav-item"><a href="{{ route('user-bookings') }}" class="nav-link">Booking
-                                    Details</a></li>
+                            <li class="nav-item "><a href="{{ route('user-bookings') }}" class="nav-link">Booking
+                                    Details</a>
+                            </li>
                             <li class="nav-item "><a href="{{ route('car-for-sale') }}" class="nav-link">
                                     Cars For Sale</a>
                             </li>
-                            <li class="nav-item"><a href="{{ route('logout-user') }}" class="nav-link"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <li class="nav-item "><a href="{{ route('logout-user') }}" class="nav-link">Logout</a>
                             </li>
+
                             <form method="POST" id="logout-form" action="{{ route('logout') }}">
                                 @csrf
                             </form>
                         @else
-                            <li class="nav-item"><a
+                            <li class="nav-item "><a
                                     href="{{ Route::has('register') ? route('register') : 'javascript:void(0)' }}"
-                                    class="nav-link">Register</a></li>
-                            <li class="nav-item"><a
+                                    class="nav-link">Register</a>
+                            </li>
+                            <li class="nav-item "><a
                                     href="{{ Route::has('login') ? route('login') : 'javascript:void(0)' }}"
-                                    class="nav-link">Login</a></li>
+                                    class="nav-link">Login</a>
+                            </li>
+
+                            <form method="POST" id="logout-form" action="{{ route('logout') }}">
+                                @csrf
+                            </form>
                         @endif
+
+                        {{-- <li class="nav-item active"><a href="#" class="nav-link">Home</a></li> --}}
+                        {{-- <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+	          <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
+	          <li class="nav-item"><a href="car.html" class="nav-link">Cars</a></li>
+	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li> --}}
                     </ul>
                 </div>
             </div>
         </nav>
         <!-- END nav -->
 
-        <div class="hero-wrap ftco-degree-bg" style="background-image: url('car-theme/images/bg_2.jpg');"
+        <div class="hero-wrap ftco-degree-bg" style="background-image: url('car-theme/images/bg_3.jpg');"
             data-stellar-background-ratio="0.5">
             <div class="overlay"></div>
             <div class="container">
                 <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
                     <div class="col-lg-8 ftco-animate">
                         <div class="text w-100 text-center mb-md-5 pb-md-5">
-                            <h1 class="mb-4">Booking Details</h1>
-                            <p style="font-size: 18px;">{{ Auth::user()->name }}  booking details.</p>
+                            <h1 class="mb-4">Cars For Sale</h1>
+                            <p style="font-size: 18px;">For sale purchase please visit our office.</p>
 
                         </div>
                     </div>
@@ -81,57 +105,51 @@
             </div>
         </div>
 
-        @php
-            $imageUrl = asset('car-theme/images/bg_3.jpg');
-            $bookings = App\Models\CarBooking::with('car')->where('user_id', Auth::id())->get();
-        @endphp
-
-        <section class="ftco-section ftco-no-pt bg-light">
+        <section class="ftco-section bg-light">
             <div class="container">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <div class="row">
+                    @php
+                        $cars = App\Models\Car::where('available_for_sale', 'yes')->paginate(9);
+                    @endphp
+                    @foreach ($cars as $car)
+                        @php
+                            if (isset($car->getMedia('photo_attachment')[0])) {
+                                $imageUrl = $car->getMedia('photo_attachment')[0]->getUrl();
+                            } else {
+                                $imageUrl =
+                                    'https://ui-avatars.com/api/?background=eae8fd&color=7367f0&name=' . $car->name;
+                            }
 
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-            </div>
-        </section>
-        <section class="ftco-section ftco-booking-details">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        @foreach ($bookings as $booking)
-                            <div class="booking-details mb-5">
-                                <h2>Booking #{{ $booking->id }}</h2>
-                                <p><strong>Car Name:</strong> {{ $booking->car->name }}</p>
-                                <p><strong>Pick-up Location:</strong> {{ $booking->pickup_location }}</p>
-                                <p><strong>Drop-off Location:</strong> {{ $booking->dropoff_location }}</p>
-                                <p><strong>Pick-up Date:</strong> {{ $booking->pick_up_date }}</p>
-                                <p><strong>Drop-off Date:</strong> {{ $booking->drop_off_date }}</p>
-                                {{-- <p><strong>Pick-up Time:</strong> {{ $booking->pickup_time }}</p> --}}
-                                <p><strong>Rent Type:</strong> {{ $booking->rent_type }}</p>
-                                @if ($booking->rent_type === 'per_km')
-                                    <p><strong>Total KM:</strong> {{ $booking->total_km }}</p>
-                                @endif
-                                <p><strong>Car Rate:</strong> ${{ $booking->car_rate }}</p>
-                                <p><strong>Total Fare:</strong> ${{ $booking->total_fare }}</p>
-                                {{-- <p><strong>Features:</strong></p> --}}
-                                {{-- <ul>
-                                @foreach ($booking->car->features as $feature)
-                                    <li>{{ $feature }}</li>
-                                @endforeach
-                            </ul> --}}
+                        @endphp
+
+                        <div class="col-md-4">
+                            <div class="car-wrap rounded ftco-animate">
+                                <a href="{{ $imageUrl }}" target="_blank">
+                                    <div class="img rounded d-flex align-items-end"
+                                        style="background-image: url({{ $imageUrl }}); height: 200px; width: 100%; background-size: cover; background-position: center;">
+                                    </div>
+                                </a>
+                                <div class="text">
+                                    <h2 class="mb-0"><a href="#">{{ ucfirst($car->name) }}</a></h2>
+                                    <div class="d-flex mb-3">
+                                        <span class="cat">{{ $car->category->name ?? '-' }} -
+                                            {{ $car->brand->name ?? '-' }}</span>
+
+                                        <p class="price ml-auto">${{ numberFormat($car->full_day_rate_with_fuel) }}
+                                            <span>/day</span>
+                                        </p>
+                                    </div>
+                                    {{-- <p class="d-flex mb-0 d-block"><a
+                                            href="{{ route('car-booking', ['id' => $car->id]) }}"
+                                            class="btn btn-primary py-2 mr-1">Book now</a></p> --}}
+                                </div>
                             </div>
-                        @endforeach
+                        </div>
+                    @endforeach
+                </div>
+                <div class="row mt-5">
+                    <div class="col text-center">
+                        {{ $cars->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
             </div>
@@ -213,10 +231,6 @@
             </div>
         </footer>
 
-        @php
-            $user = Auth::user();
-        @endphp
-
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
                 <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4"
@@ -242,7 +256,6 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
         <script src="{{ asset('car-theme/js/google-map.js') }}"></script>
         <script src="{{ asset('car-theme/js/main.js') }}"></script>
-        <script></script>
 
     </body>
 

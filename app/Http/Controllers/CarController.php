@@ -240,4 +240,9 @@ class CarController extends Controller
     ];
     return view('CarFrontend/carLocation', $data);
   }
+
+  public function CarForSale()
+  {
+    return view('CarFrontend/car-for-sale');
+  }
 }

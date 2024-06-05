@@ -180,6 +180,7 @@ class CarBookingTable extends DataTable
    */
   protected function getColumns(): array
   {
+
     $editPermission = Auth::user()->hasPermissionTo('car-categories.edit');
     $columns = [
       // ($selectedDeletePermission ?
@@ -192,12 +193,12 @@ class CarBookingTable extends DataTable
       Column::computed('mobile_no')->title('Customer Mobile Number')->addClass('text-nowrap'),
 
       Column::make('car_id')->title('Car Name')->addClass('text-nowrap'),
-      Column::make('pick_up_location')->title('Pick Up Location')->addClass('text-nowrap'),
-      Column::make('drop_off_location')->title('Drop Off Location')->addClass('text-nowrap'),
+      Column::make('pickup_location')->title('Pick Up Location')->addClass('text-nowrap'),
+      Column::make('dropoff_location')->title('Drop Off Location')->addClass('text-nowrap'),
       Column::make('pick_up_date')->title('Pick Up Date')->addClass('text-nowrap'),
       Column::make('drop_off_date')->title('Drop Of Date')->addClass('text-nowrap'),
-      Column::make('rate')->title('Rate')->addClass('text-nowrap'),
-      Column::make('discount_rate')->title('Discount Rate')->addClass('text-nowrap'),
+      Column::make('car_rate')->title('Car Rate')->addClass('text-nowrap'),
+      Column::make('total_fare')->title('Total Fare')->addClass('text-nowrap'),
 
     ];
 

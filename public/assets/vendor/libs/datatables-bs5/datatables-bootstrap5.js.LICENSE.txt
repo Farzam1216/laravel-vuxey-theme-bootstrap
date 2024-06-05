@@ -33,32 +33,24 @@
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 
-/*! DataTables 1.13.5
- * ©2008-2023 SpryMedia Ltd - datatables.net/license
+/*! DataTables 1.13.1
+ * ©2008-2022 SpryMedia Ltd - datatables.net/license
  */
 
 /*! DataTables Bootstrap 5 integration
  * 2020 SpryMedia Ltd - datatables.net/license
  */
 
-/*! FixedColumns 4.3.0
-     * © SpryMedia Ltd - datatables.net/license
+/*! FixedColumns 4.2.1
+     * 2019-2022 SpryMedia Ltd - datatables.net/license
      */
 
-/*! FixedColumns 4.3.0
- * © SpryMedia Ltd - datatables.net/license
+/*! FixedColumns 4.2.1
+ * 2019-2022 SpryMedia Ltd - datatables.net/license
  */
 
-/*! FixedHeader 3.4.0
- * © SpryMedia Ltd - datatables.net/license
- */
-
-/*! RowGroup 1.4.0
- * © SpryMedia Ltd - datatables.net/license
- */
-
-/*! Select for DataTables 1.7.0
- * © SpryMedia Ltd - datatables.net/license/mit
+/*! Select for DataTables 1.5.0
+ * 2015-2021 SpryMedia Ltd - datatables.net/license/mit
  */
 
 /*! http://mths.be/fromcodepoint v0.1.0 by @mathias */

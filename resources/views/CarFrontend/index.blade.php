@@ -32,7 +32,8 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('frontend') }}"><span>{{ config('app.name', 'Laravel') }}</span></a>
+                <a class="navbar-brand"
+                    href="{{ route('frontend') }}"><span>{{ config('app.name', 'Laravel') }}</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                     aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
@@ -50,6 +51,9 @@
                             @endcan
                             <li class="nav-item "><a href="{{ route('user-bookings') }}" class="nav-link">Booking
                                     Details</a>
+                            </li>
+                            <li class="nav-item "><a href="{{ route('car-for-sale') }}" class="nav-link">
+                                    Cars For Sale</a>
                             </li>
                             <li class="nav-item "><a href="{{ route('logout-user') }}" class="nav-link">Logout</a>
                             </li>

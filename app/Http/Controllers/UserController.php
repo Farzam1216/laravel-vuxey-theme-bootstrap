@@ -97,6 +97,8 @@ class UserController extends Controller
       'name' => ['required', 'string'],
       'mobile_no' => ['required'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+      'dicount_on_number_of_bookings_per_month' => ['required'],
+      'disount_percentage' => ['required'],
       // 'password' => ['required', 'string', 'min:8', 'confirmed'],
     ]);
 
@@ -113,8 +115,8 @@ class UserController extends Controller
           'email' => $inputs['email'],
           'mobile_no' => $inputs['mobile_no'],
           'password' => Hash::make($password),
-          'dicount_on_number_of_bookings_per_month' => $inputs['dicount_on_number_of_bookings_per_month'],
-          'dicount_on_number_of_bookings_per_month' => $inputs['disount_percentage'],
+          'dicount_on_number_of_bookings_per_month' => (float)$inputs['dicount_on_number_of_bookings_per_month'],
+          'disount_percentage' => (float)$inputs['disount_percentage'],
         ]);
 
         Mail::to($user->email)->send(new RegisterUserPasswordMail($user, $password));
@@ -170,44 +172,7 @@ class UserController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show(Request $request, $id)
-  {
-    $site_id = decryptParams($site_id);
-    $id = decryptParams($id);
-    $roles = Role::where('is_child', false)->get();
 
-    $user = $this->userInterface->getById($site_id, $id);
-
-    $parentRoles = $user->roles;
-    $Selectedroles = [];
-    foreach ($parentRoles as $role) {
-      if ($role['is_child'] == true) {
-        $Selectedroles[] = getRoleParentByParentId($role['parent_id']);
-      } else {
-        $Selectedroles[] = $role->name;
-      }
-    }
-    if ($user && !empty($user)) {
-      $images = $user->getMedia('user_signature');
-      $cv = $user->getMedia('cv_attachment');
-      $photo = $user->getFirstMediaUrl('photo_attachment');
-      // dd($images);
-      $data = [
-        'site_id' => $site_id,
-        'id' => $id,
-        'user' => $user,
-        'images' => $images,
-        'cv' => $cv,
-        'photo' => $photo,
-        'Selectedroles' => $Selectedroles,
-        'roles' => $roles,
-        'city' => [],
-        'state' => [],
-      ];
-
-      return view('app.users.preview', $data);
-    }
-  }
 
   /**
    * Show the form for editing the specified resource.
@@ -265,20 +230,31 @@ class UserController extends Controller
       'name' => ['required', 'string'],
       'mobile_no' => ['required'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
+      'dicount_on_number_of_bookings_per_month' => ['required'],
+      'disount_percentage' => ['required'],
       // 'password' => ['required', 'string', 'min:8', 'confirmed'],
     ]);
     $id = decryptParams($id);
     try {
       if (!request()->ajax()) {
         $inputs = $request->all();
-        $data['name'] = $inputs['name'];
-        $data['email'] = $inputs['email'];
-        $data['mobile_no'] = $inputs['mobile_no'];
-        $data['dicount_on_number_of_bookings_per_month'] = $inputs['dicount_on_number_of_bookings_per_month'];
-        $data['disount_percentage'] = $inputs['disount_percentage'];
+        // $data['name'] = $inputs['name'];
+        // $data['email'] = $inputs['email'];
+        // $data['mobile_no'] = $inputs['mobile_no'];
+        // $data['dicount_on_number_of_bookings_per_month'] = (float) $inputs['dicount_on_number_of_bookings_per_month'];
+        // $data['disount_percentage'] = (float)$inputs['disount_percentage'];
 
-        User::where('id', $id)->update($data);
+        // User::where('id', $id)->update($data);
         $user = User::find($id);
+
+
+        $user->name = $inputs['name'];
+        $user->email = $inputs['email'];
+        $user->mobile_no = $inputs['mobile_no'];
+        $user->dicount_on_number_of_bookings_per_month = (float) $inputs['dicount_on_number_of_bookings_per_month'];
+        $user->disount_percentage = (float) $inputs['disount_percentage'];
+        // dd($user);
+        $user->save();
 
         // Process roles
         foreach ($user->roles as $role) {

@@ -788,10 +788,8 @@
 
                 const perDayRate = {{ $car->full_day_rate_with_fuel }};
                 const perKmRate = {{ $car->per_km_rate_with_fuel }};
-                const discountPercentage = {{ $user->disount_percentage }}; // Example discount percentage
-
-                const rentalCount = {{ $rentalCount }}; // Dynamically passed from the controller
-                // Assuming this is passed from the controller
+                const discountPercentage = {{ $user->disount_percentage }};
+                const rentalCount = {{ $rentalCount }};
                 const dicount_on_number_of_bookings_per_month = {{ $user->dicount_on_number_of_bookings_per_month }};
 
                 function calculateFare() {
@@ -803,10 +801,21 @@
                     const pickUpDate = new Date(pickUpDateInput.value);
                     const dropOffDate = new Date(dropOffDateInput.value);
 
-                    if (!isNaN(pickUpDate) && !isNaN(dropOffDate) && pickUpDate <= dropOffDate) {
-                        const timeDiff = Math.abs(dropOffDate - pickUpDate);
-                        totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    // If pickUpDate is greater than or equal to dropOffDate, set dropOffDate to next day
+                    if (pickUpDate.getTime() === dropOffDate.getTime()) {
+                        totalDays = 1; // Set totalDays to 1
+                    } else {
+                        if (!isNaN(pickUpDate) && !isNaN(dropOffDate) && pickUpDate <= dropOffDate) {
+                            const timeDiff = Math.abs(dropOffDate - pickUpDate);
+                            totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                        }
                     }
+
+
+                    // if (!isNaN(pickUpDate) && !isNaN(dropOffDate) && pickUpDate <= dropOffDate) {
+                    //     const timeDiff = Math.abs(dropOffDate - pickUpDate);
+                    //     totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    // }
 
                     if (rentType === 'per_day') {
                         totalFare = totalDays * perDayRate;
